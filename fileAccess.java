@@ -1,3 +1,9 @@
+/*
+java fileAccess <file...(s)>
+
+program will open a list of files passed to it
+*/
+
 import java.io.*;
 public class fileAccess
 {
@@ -15,7 +21,7 @@ public class fileAccess
 		fr=new FileReader(f);
 	    //do something with the files
 		while((temp=fr.read())!=-1)
-		    System.out.print(temp);//["123"=49 50 51
+		    System.out.printf("%c",temp);
 	    }
 	    catch(FileNotFoundException e){
 		System.out.println(e.getMessage());
