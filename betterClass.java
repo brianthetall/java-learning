@@ -12,6 +12,20 @@ public class betterClass
 	idnumber=-1;
 	name="";
     }
+    public betterClass(String info){//string that contains number&name
+	String infoArray[]=info.split(" ");
+	String nameCat="";;
+	/*
+	for(int i=0;i<infoArray.length;i++)
+	    {
+		System.out.println("INFOARRAY["+i+"]="+infoArray[i]);
+	    }
+	*/
+	for(int i=1;i<infoArray.length;i++)
+	    nameCat=nameCat.concat(infoArray[i]+" ");
+	this.idnumber=(new Integer(infoArray[0])).intValue();
+	this.name=nameCat;
+    }
     public betterClass(int idnumber,String name)//tested
     {
 	this.idnumber=idnumber;
@@ -34,6 +48,7 @@ public class betterClass
     }
     public String getName(){return name;}//TESTED
     public void setName(String name){this.name=name;}//TESTED
+    //==========================MAIN==============================
     public static void main(String args[])
     {
 	System.out.println("betterClassSTART");
@@ -54,7 +69,6 @@ public class betterClass
 	System.out.println("[4] "+bc.toString());
 	betterClass newClass=new betterClass(bc);
 	System.out.println(newClass.toString());
-
 	System.out.println("betterClassEND");
     }
 }
