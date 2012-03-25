@@ -29,11 +29,11 @@ public class serverBinary{
 	    imageFileStream=new FileOutputStream(imageFile);
 	    try{
 		while(true){//dis.readByte will throw EOFException when empty
-		    imageFileStream.write(dis.readByte());//write each byte into a waiting FILE...
+		    //		    imageFileStream.write(dis.readByte());//write each byte into a waiting FILE...
+		    System.out.print(dis.readByte());
 		}
 	    }catch(EOFException e){
-		//EOF reached
-		System.out.println(e.getMessage());
+		System.out.println("EOF"+e.getMessage());
 	    }catch(IOException e){
 		System.out.println(e.getMessage());
 	    }
