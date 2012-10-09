@@ -23,12 +23,14 @@ public class readDatabase{
 	    fread=new FileReader(f);
 	    bread=new BufferedReader(fread);//buffered reader for file is ready
 	    dbase=new ArrayList<betterClass>(size);//create arraylist accordingly
+
 	}catch(Exception e){
 	    System.out.println(e.getMessage());
 	}
     }
     public int getSize(){return size;}
     public betterClass getObject(int index){
+
 	return(dbase.get(index));
     }
     public void readFile(){//assumes the object has been initalized (with constructor)
