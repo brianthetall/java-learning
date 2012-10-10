@@ -9,6 +9,10 @@ public class RSACrypt{
     private PublicKey pk;
     private PrivateKey privkey;
 
+    public RSACrypt(String mode,String filename,String inputFile,String sign,String signkey){
+
+    }
+
     public RSACrypt(String mode,String filename,String inputFile){
 	try{
 	    byte[] bs = getByteStreamFromFile(inputFile);
@@ -16,7 +20,6 @@ public class RSACrypt{
 		//encrypt
 		pk = readKeyFromFile(filename);
 		byte[] cipherText = encrypt(bs);
-		//write to file
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(inputFile+".enc"));
 		bos.write(cipherText,0,cipherText.length);
 		bos.flush();
@@ -32,6 +35,26 @@ public class RSACrypt{
 		bos.close();
 	    }
 	}catch(Exception e){System.out.println(e.getMessage());}
+    }
+
+    private byte[] sign(PrivateKey priv,byte[] data){
+	try{
+	    Signature sig = Signature.getInstance("SHA256withRSA");
+	    sig.initSign(priv);
+	    sig.update(data);
+	    return sig.sign();
+	}catch(Exception e){System.out.println(e.getMessage());}
+	return null;
+    }
+
+    private boolean verify(PublicKey pub,byte[] data,byte[] signature){
+	try{
+	    Signature sig = Signature.getInstance("SHA256withRSA");
+	    sig.initVerify(pub);
+	    sig.update(data);
+	    return sig.verify(signature);
+	}catch(Exception e){System.out.println(e.getMessage());}
+	return false;
     }
 
     private byte[] getByteStreamFromFile(String inputFile){
@@ -98,15 +121,22 @@ public class RSACrypt{
     }
 
     public static void main(String args[]){
-	if(args.length!=3){
-	    System.out.println("RSACrypt [-e|-d] <keyfile> <plain-data-file>\r\n");
+	if(args.length!=3 && args.length!=5){
+	    System.out.println("RSACrypt [-e|-d] -s <signing-private-key> <keyfile> <data-file>\r\n");
 	    System.exit(-1);
 	}
 	else{
-	    if(args[0].compareToIgnoreCase("-e")==0 || args[0].compareToIgnoreCase("-d")==0)
-		{
-		    new RSACrypt(args[0],args[1],args[2]);
-		}
+	    if(args.length==3){
+		if(args[0].compareToIgnoreCase("-e")==0 || args[0].compareToIgnoreCase("-d")==0)
+		    {
+			new RSACrypt(args[0],args[1],args[2]);
+		    }
+	    }else if(args.length==5){
+		if(args[0].compareToIgnoreCase("-e")==0 || args[0].compareToIgnoreCase("-d")==0)
+		    {
+			new RSACrypt(args[0],args[3],args[4],args[1],args[2],);
+		    }
+	    }
 	}
 
     }

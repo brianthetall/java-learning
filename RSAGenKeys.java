@@ -24,8 +24,8 @@ public class RSAGenKeys{
 	    RSAPublicKeySpec pub=fact.getKeySpec(kp.getPublic(),RSAPublicKeySpec.class);
 	    RSAPrivateKeySpec priv=fact.getKeySpec(kp.getPrivate(),RSAPrivateKeySpec.class);
 	    try{
-		saveToFile("public.key",pub.getModulus(),pub.getPublicExponent());
-		saveToFile("private.key",priv.getModulus(),priv.getPrivateExponent());
+		saveToFile("key",pub.getModulus(),pub.getPublicExponent());
+		saveToFile("key.private",priv.getModulus(),priv.getPrivateExponent());
 	    }catch(Exception e){System.out.println("Error Saving Keys To Disk.\r\n"+e.getMessage()+"\r\n");}
 	}catch(NoSuchAlgorithmException e){
 	    System.out.println(e.getMessage());
