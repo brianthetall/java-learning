@@ -9,10 +9,6 @@ public class RSACrypt{
     private PublicKey pk;
     private PrivateKey privkey;
 
-    public RSACrypt(String mode,String filename,String inputFile,String sign,String signkey){
-
-    }
-
     public RSACrypt(String mode,String filename,String inputFile){
 	try{
 	    byte[] bs = getByteStreamFromFile(inputFile);
@@ -37,6 +33,40 @@ public class RSACrypt{
 	}catch(Exception e){System.out.println(e.getMessage());}
     }
 
+
+    public RSACrypt(String mode,String filename,String inputFile,String sign,String signkey,String signatureForVerification){
+	this(mode,filename,inputFile);
+	if(sign.compareToIgnoreCase("-s")==0){//sign the plaintext with the privateKey found in signkey
+	    if(mode.compareToIgnoreCase("-e")==0){
+		    byte[] plain = getByteStreamFromFile(inputFile);//reopen the plain
+		    try{
+		    privkey = readPrivKeyFromFile(signkey);//read privatekey used for signatures
+		    byte[] signature = sign(privkey,plain);//generate signature using private-key & plaintext
+		    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(inputFile+".sig"));
+		    bos.write(signature,0,signature.length);//write the signature to file
+		    bos.flush();
+		    bos.close();
+		    }catch(Exception e){System.out.println(e.getMessage());}
+	    }else{
+		System.out.println("Cannot sign when not encrypting\r\n");
+	    }
+	}else if(sign.compareToIgnoreCase("-v")==0){//verify using the public key contained in file 'signkey'
+	    if(mode.compareToIgnoreCase("-d")==0){
+		byte[] plain = getByteStreamFromFile(inputFile+".dec");
+		byte[] sigVerify = getByteStreamFromFile(signatureForVerification);
+		try{
+		    pk = readKeyFromFile(signkey);
+		    boolean verified = verify(pk,plain,sigVerify);
+		    if(verified){System.out.println("MessageVerified\r\n");}
+		    else{System.out.println("MessageNOTVerified\r\n");}
+		}catch(Exception e){System.out.println(e.getMessage());}
+	    }else{
+		System.out.println("Cannot verify when not decrypting\r\n");
+	    }
+	}
+	
+    }
+    
     private byte[] sign(PrivateKey priv,byte[] data){
 	try{
 	    Signature sig = Signature.getInstance("SHA256withRSA");
@@ -121,23 +151,23 @@ public class RSACrypt{
     }
 
     public static void main(String args[]){
-	if(args.length!=3 && args.length!=5){
-	    System.out.println("RSACrypt [-e|-d] -s <signing-private-key> <keyfile> <data-file>\r\n");
+	if(args.length!=3 && args.length!=5 && args.length!=6){
+	    System.out.println("RSACrypt [-e|-d] ([-s|-v] <signkey/verifykey> <signature-input-file(Verification)>) <keyfile> <data-file>\r\n-eNcrypt -dEcrypt -sIgn -vErify\r\n");
 	    System.exit(-1);
 	}
 	else{
-	    if(args.length==3){
-		if(args[0].compareToIgnoreCase("-e")==0 || args[0].compareToIgnoreCase("-d")==0)
-		    {
-			new RSACrypt(args[0],args[1],args[2]);
-		    }
-	    }else if(args.length==5){
-		if(args[0].compareToIgnoreCase("-e")==0 || args[0].compareToIgnoreCase("-d")==0)
-		    {
-			new RSACrypt(args[0],args[3],args[4],args[1],args[2],);
-		    }
+	    if(args.length==3 && (args[0].compareToIgnoreCase("-e")==0 || args[0].compareToIgnoreCase("-d")==0) ){
+		new RSACrypt(args[0],args[1],args[2]);
+	    }else if(args.length==5){//signing
+		if(args[0].compareToIgnoreCase("-e")==0){
+		    new RSACrypt(args[0],args[3],args[4],args[1],args[2],null);
+		}
+	    }else if(args.length==6){//verification
+		if(args[0].compareToIgnoreCase("-d")==0){
+		    new RSACrypt(args[0],args[4],args[5],args[1],args[2],args[3]);
+		    //RSACrypt(mode,key-crypt,data,sign/verify-mode,sign-key,signature-file)
+		}
 	    }
 	}
-
-    }
-}
+    }//end main
+}//end class
