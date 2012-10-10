@@ -57,7 +57,7 @@ public class RSACrypt{
 		try{
 		    pk = readKeyFromFile(signkey);
 		    boolean verified = verify(pk,plain,sigVerify);
-		    if(verified){System.out.println("MessageVerified\r\n");}
+		    if(verified){System.out.println("MessageVerified");}
 		    else{System.out.println("MessageNOTVerified\r\n");}
 		}catch(Exception e){System.out.println(e.getMessage());}
 	    }else{

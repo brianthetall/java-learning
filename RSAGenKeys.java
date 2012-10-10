@@ -9,7 +9,7 @@ public class RSAGenKeys{
     //    private static int KEYSIZE=4096;
     private KeyPairGenerator kpg;
 
-    public RSAGenKeys(){
+    public RSAGenKeys(String filename){
 	try{
 	    kpg = KeyPairGenerator.getInstance("RSA");
 	}catch(NoSuchAlgorithmException e){
@@ -24,14 +24,18 @@ public class RSAGenKeys{
 	    RSAPublicKeySpec pub=fact.getKeySpec(kp.getPublic(),RSAPublicKeySpec.class);
 	    RSAPrivateKeySpec priv=fact.getKeySpec(kp.getPrivate(),RSAPrivateKeySpec.class);
 	    try{
-		saveToFile("key",pub.getModulus(),pub.getPublicExponent());
-		saveToFile("key.private",priv.getModulus(),priv.getPrivateExponent());
+		saveToFile(filename,pub.getModulus(),pub.getPublicExponent());
+		saveToFile(filename+".private",priv.getModulus(),priv.getPrivateExponent());
 	    }catch(Exception e){System.out.println("Error Saving Keys To Disk.\r\n"+e.getMessage()+"\r\n");}
 	}catch(NoSuchAlgorithmException e){
 	    System.out.println(e.getMessage());
 	}catch(InvalidKeySpecException e){
 	    System.out.println(e.getMessage());
 	}
+    }
+
+    public RSAGenKeys(){
+	this("key");
     }
     
     private void saveToFile(String filename,BigInteger mod,BigInteger exp)throws IOException
@@ -48,7 +52,10 @@ public class RSAGenKeys{
     }
 
     public static void main(String args[]){
-	//	if(args.length == 0){
+	if(args.length == 0){
 	    RSAGenKeys rsa = new RSAGenKeys();
+	}else{
+	    RSAGenKeys rsa = new RSAGenKeys(args[0]);
+	}
     }
 }
