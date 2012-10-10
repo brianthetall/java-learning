@@ -11,38 +11,58 @@ public class RSACrypt{
 
     public RSACrypt(String mode,String filename,String inputFile){
 	try{
-	    pk = readKeyFromFile(filename);
-	    bs = getByteStreamFromFile(inputFile);
-	    System.out.println(pk.toString());
+	    byte[] bs = getByteStreamFromFile(inputFile);
 	    if(mode.compareToIgnoreCase("-e")==0){
 		//encrypt
+		pk = readKeyFromFile(filename);
 		byte[] cipherText = encrypt(bs);
+		//write to file
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(inputFile+".enc"));
+		bos.write(cipherText,0,cipherText.length);
+		bos.flush();
+		bos.close();
 	    }else if(mode.compareToIgnoreCase("-d")==0){
 		//decrypt
+		privkey = readPrivKeyFromFile(filename);
 		byte[] plainText = decrypt(bs);
+		//writeFile
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(inputFile+".dec"));
+		bos.write(plainText,0,plainText.length);
+		bos.flush();
+		bos.close();
 	    }
 	}catch(Exception e){System.out.println(e.getMessage());}
     }
 
     private byte[] getByteStreamFromFile(String inputFile){
-	BufferedReader br = new BufferedReader(new FileInputStream(inputFile));
-	byte[] ret=new byte[br.available()];
-	br.read((byte[])ret,0,ret.length);
-	return ret;
+	try{
+	    BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inputFile));
+	    byte[] ret=new byte[bis.available()];
+	    bis.read((byte[])ret,0,ret.length);
+	    bis.close();
+	    return ret;
+	}catch(Exception e){System.out.println(e.getMessage());}
+	return null;
     }
 
     private byte[] encrypt(byte[] data){
-	Cipher cipher = Cipher.getInstance("RSA");
-	cipher.init(Cipher.ENCRYPT_MODE,pk);
-	byte[] ciphertext = cipher.doFinal(data);
-	return ciphertext;
+	try{
+	    Cipher cipher = Cipher.getInstance("RSA");
+	    cipher.init(Cipher.ENCRYPT_MODE,pk);
+	    byte[] ciphertext = cipher.doFinal(data);
+	    return ciphertext;
+	}catch(Exception e){System.out.println(e.getMessage());}
+	return null;
     }
 
     private byte[] decrypt(byte[] data){
-	Cipher cipher = Cipher.getInstance("RSA");
-	cipher.init(Cipher.DECRYPT_MODE,privkey);
-	byte[] ciphertext = cipher.doFinal(data);
-	return ciphertext;
+	try{
+	    Cipher cipher = Cipher.getInstance("RSA");
+	    cipher.init(Cipher.DECRYPT_MODE,privkey);
+	    byte[] ciphertext = cipher.doFinal(data);
+	    return ciphertext;
+	}catch(Exception e){System.out.println(e.getMessage());}
+	return null;
     }
 
     private PrivateKey readPrivKeyFromFile(String keyfile) throws IOException{
