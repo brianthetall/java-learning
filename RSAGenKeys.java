@@ -5,7 +5,8 @@ import java.security.*;
 import java.security.spec.*;
 
 public class RSAGenKeys{
-    private static int KEYSIZE=2048;
+    private static int KEYSIZE=2048;//5mins
+    //    private static int KEYSIZE=4096;
     private KeyPairGenerator kpg;
 
     public RSAGenKeys(){
