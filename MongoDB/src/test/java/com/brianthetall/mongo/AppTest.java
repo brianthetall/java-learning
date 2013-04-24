@@ -35,6 +35,7 @@ public class AppTest
     {
 
 	MongoIO mio = new Client("A3M-u8otI1GJrTfv6pO49c93E8c1ORTZ").getMongoIO();
+	System.out.println(mio.lsDatabases());
 
         assertTrue( true );
     }

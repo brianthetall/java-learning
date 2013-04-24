@@ -1,5 +1,6 @@
 package com.brianthetall.mongo;
 
+import java.lang.StringBuffer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -7,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
 import java.io.Reader;
+import java.io.BufferedReader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,7 +23,7 @@ import com.google.gson.JsonSyntaxException;
 public class Client {
 
     static final private String apiVersion = "1";
-    static final private String initPath = "/start/api/";
+    static final private String initPath = "/api/";
     static final Random rand = new Random();
     private String token;
     private Cloud cloud;
@@ -53,21 +55,25 @@ public class Client {
         return new MongoIO(this);
     }
 
-    Reader delete(String endpoint) throws IOException {
+    String delete(String endpoint) throws IOException {
         return request("DELETE", endpoint, null);
     }
 
-    Reader get(String endpoint) throws IOException {
+    String get(String endpoint) throws IOException {
         return request("GET", endpoint, null);
     }
 
-    Reader post(String endpoint, String body) throws IOException {
+    String post(String endpoint, String body) throws IOException {
         return request("POST", endpoint, body);
     }
 
-    private Reader request(String method, String endpoint, String body) throws IOException {
+    String put(String endpoint, String body) throws IOException {
+        return request("PUT", endpoint, body);
+    }
 
-        String path = initPath + apiVersion + "/SDrive/" + endpoint;
+    private String request(String method, String endpoint, String body) throws IOException {
+
+        String path = initPath + apiVersion + endpoint + "?apiKey="+token;//pass token here on POST? yes
         URL url = new URL(cloud.scheme, cloud.host, cloud.port, path);
 
         final int maxRetries = 5;
@@ -98,12 +104,14 @@ public class Client {
         String msg;
     }
 
-    private Reader singleRequest(String method, URL url, String body) throws IOException {
+    private String singleRequest(String method, URL url, String body) throws IOException {
+
+	System.out.println("DEBUG:"+method+" "+url);
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(method);
-        conn.setRequestProperty("Authorization", "OAuth " + token);
-        conn.setRequestProperty("User-Agent", "SecureDrive Java Client");
+	//        conn.setRequestProperty("Authorization", "OAuth " + token);
+	//        conn.setRequestProperty("User-Agent", "SecureDrive Java Client");
 
         if (body != null) {
             conn.setRequestProperty("Content-Type", "application/json");
@@ -120,6 +128,7 @@ public class Client {
         }
 
         int status = conn.getResponseCode();
+
         if (status != 200) {
 
             String msg;
@@ -146,6 +155,18 @@ public class Client {
             throw new HttpException(status, msg);
         }
 
-        return new InputStreamReader(conn.getInputStream());
+	BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	StringBuffer sb=new StringBuffer();
+	String temp;
+	try{
+	    while( (temp=br.readLine()) != null){
+		System.out.println("Client"+temp);
+		sb.append(temp);
+	    }
+	}catch(IOException e){
+	    System.out.println(e.getMessage() + " Client-reading-reply");
+	}
+	String retval = sb.toString();
+        return retval;
     }
 }

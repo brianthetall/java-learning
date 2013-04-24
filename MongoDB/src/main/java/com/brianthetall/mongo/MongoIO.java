@@ -1,5 +1,8 @@
 package com.brianthetall.mongo;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 /** REST-API Interface
  * Used for communicating with the MongoLab DB-service
  */
@@ -14,19 +17,25 @@ public class MongoIO{
 	    System.err.println("Null Client used to make MongoIO");
     }
 
-    public String lsDatabases(){
 
+    public String lsDatabases(){
+	try{
+	    return client.get("/databases");
+	}catch(IOException e){
+	    System.out.println("Error: lsDatabases"+e.getMessage());
+	    return null;
+	}
     }
 
     public String lsCollections(String database){
-
+	    return null;
     }
 
     /**
      * collection is a JSON string to be added to mongoDB
      */
     public String insertCollection(String collection){
-
+    return null;
     }
 
     /**
@@ -34,7 +43,7 @@ public class MongoIO{
      * @return JSON representation of Document
      */
     public String getDocument(String database,String collection){
-
+    return null;
     }
 
     /**
@@ -42,7 +51,7 @@ public class MongoIO{
      *
      */
     public String deleteDocument(String docId){
-
+    return null;
     }
 
     /**
@@ -52,15 +61,7 @@ public class MongoIO{
      * reIndex,collStats,dbStats
      */
     public String runCommand(String command){
-
+    return null;
     }
 
-    public static void main(String args[]){
-
-	if(args.length!=2){
-	    System.out.println("MongoIO <ServerURL> <OAuthKey>");
-	    System.exit(-1);
-	}
-	new MongoIO(args[0],args[1]);
-    }
 }
