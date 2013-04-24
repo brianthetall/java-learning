@@ -3,6 +3,13 @@ package com.brianthetall.mongo;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Unit test for simple App.
@@ -33,9 +40,31 @@ public class AppTest
      */
     public void testApp()
     {
+	String secret=null;
 
-	MongoIO mio = new Client("A3M-u8otI1GJrTfv6pO49c93E8c1ORTZ").getMongoIO();
+	try{
+	    FileInputStream fis = new FileInputStream(new File("/home/ubuntu/client.secret"));
+	    BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+	    secret=br.readLine();
+
+	}catch(IOException e){
+	    System.out.println("AppTest: IOError opening secrets file");
+	}catch(Exception e){
+	    System.out.println("AppTest: Error opening secrets file");
+	}
+
+	MongoIO mio = new Client(secret).getMongoIO();
 	System.out.println(mio.lsDatabases());
+
+	//	System.out.println(mio.lsCollections("gludb"));
+
+	ArrayList<MongoCollection> collections = mio.lsCollections("gludb");
+	Iterator<MongoCollection> it=collections.iterator();
+
+	System.out.println("AppTest:");
+	while(it.hasNext()){
+	    System.out.println( it.next().toString() );
+	}
 
         assertTrue( true );
     }

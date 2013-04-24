@@ -106,12 +106,10 @@ public class Client {
 
     private String singleRequest(String method, URL url, String body) throws IOException {
 
-	System.out.println("DEBUG:"+method+" "+url);
+	//	System.out.println("DEBUG:"+method+" "+url);
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(method);
-	//        conn.setRequestProperty("Authorization", "OAuth " + token);
-	//        conn.setRequestProperty("User-Agent", "SecureDrive Java Client");
 
         if (body != null) {
             conn.setRequestProperty("Content-Type", "application/json");
@@ -167,6 +165,7 @@ public class Client {
 	    System.out.println(e.getMessage() + " Client-reading-reply");
 	}
 	String retval = sb.toString();
+	System.out.println("Client.retval="+retval);
         return retval;
     }
 }
