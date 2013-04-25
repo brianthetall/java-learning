@@ -56,7 +56,8 @@ public class AppTest
 	MongoIO mio = new Client(secret).getMongoIO();
 	System.out.println(mio.lsDatabases());
 
-	//	System.out.println(mio.lsCollections("gludb"));
+	mio.insertDocument("gludb","Two",mio);
+	mio.insertDocument("gludb","zero",mio);
 
 	ArrayList<MongoCollection> collections = mio.lsCollections("gludb");
 	Iterator<MongoCollection> it=collections.iterator();
@@ -64,18 +65,16 @@ public class AppTest
 	System.out.println("AppTest: Collections:");
 	while(it.hasNext()){
 	    String collectionName=it.next().toString();
-	    System.out.println( collectionName+" Documents:" );
+	    System.out.println("\r\n"+collectionName+" Documents:" );
 
 	    String[] documentList = mio.lsDocuments("gludb",collectionName,null);//not passing args
+	    if(documentList.length==0)
+		System.out.println("Empty Collection :-(");
 	    for(int i=0;i<documentList.length;i++)
 		System.out.println(documentList[i]);
-
-	    /*
-	    Iterator<MongoDocument> ite = docs.iterator();
-	    while(ite.hasNext())
-		System.out.println( ite.next().toString());
-	    */
 	}
+
+
 
         assertTrue( true );
     }

@@ -100,9 +100,12 @@ public class MongoIO{
      * collection is a JSON string to be added to mongoDB
      * SQL=Create Table
      */
+    /*
     public String insertCollection(String collection){
+	//happens all by itself when a file is added to a non-existant collection
 	return null;
     }
+    */
 
     public String[] lsDocuments(String database,String collection,String[] args){
 
@@ -160,16 +163,37 @@ public class MongoIO{
      * Pull DB document
      * @return JSON representation of Document
      */
-    public String getDocument(String database,String collection){
+    public String getDocument(String database,String collection,String docId){
 
 	try{
-	    return client.get("/"+database+"/collections/"+collection );
+	    return client.get("/"+database+"/collections/"+collection+"/"+docId );
 	}catch(IOException e){
 	    System.out.println("Error: lsCollections "+e.getMessage());
 	    return null;
 	}
 
 
+    }
+
+    /**
+     *
+     * Insert 
+     */
+    public String insertDocument(String database,String collection,Object object){
+	Gson gson=new Gson();
+	String payload=gson.toJson(object);
+	try{
+	    client.post("/databases/"+database+"/collections/"+collection,payload);
+	}catch(IOException e){
+	    System.out.println("MongoIO.insertDocument Error:"+e.getMessage());
+	}
+	return null;
+		    /*
+		    POST /databases/{database}/collections/{collection}
+		    Content-Type: application/json
+		    Body: <JSON data>
+
+		    */
     }
 
     /**

@@ -22,6 +22,7 @@ import com.google.gson.JsonSyntaxException;
 
 public class Client {
 
+    static final private boolean DEBUG=true;
     static final private String apiVersion = "1";
     static final private String initPath = "/api/";
     static final Random rand = new Random();
@@ -74,6 +75,7 @@ public class Client {
     private String request(String method, String endpoint, String body) throws IOException {
 
         String path = initPath + apiVersion + endpoint + "?apiKey="+token;//pass token here on POST? yes
+	if(DEBUG){System.out.println("PATH="+path);}
         URL url = new URL(cloud.scheme, cloud.host, cloud.port, path);
 
         final int maxRetries = 5;
@@ -119,6 +121,7 @@ public class Client {
         conn.connect();
 
         if (body != null) {
+	    if(DEBUG){System.out.println("Client Writing:"+body);}
             OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
             out.write(body);
 	    out.flush();
@@ -126,7 +129,7 @@ public class Client {
         }
 
         int status = conn.getResponseCode();
-
+	System.out.println("Client: STATUS="+status);
         if (status != 200) {
 
             String msg;
