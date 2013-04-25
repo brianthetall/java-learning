@@ -32,7 +32,10 @@ public class MongoIO{
 	    System.err.println("Null Client used to make MongoIO");
     }
 
-
+    /**
+     * Return JSON string containing Databases
+     * TESTED
+     */
     public String lsDatabases(){
 	try{
 	    return client.get("/databases");
@@ -44,6 +47,7 @@ public class MongoIO{
 
     /**
      * List tables in this DB
+     * TESTED
      */
     public ArrayList<MongoCollection> lsCollections(String database){
 
@@ -82,11 +86,6 @@ public class MongoIO{
 
 	    jp.close();
 
-	    /*
-	    Gson gson=new Gson();
-	    System.out.println("GSON of MongoCOllection (does private still come through?:"+gson.toJson(retval.get(0))    );
-	    */
-
 	}catch(JsonParseException e){
 	    System.out.println(e.getMessage());
 	}catch(IOException e){
@@ -97,16 +96,10 @@ public class MongoIO{
     }
 
     /**
-     * collection is a JSON string to be added to mongoDB
-     * SQL=Create Table
+     * List Documents within specified collection
+     * @return String[] of JSON documents
+     * TESTED: without using args! 
      */
-    /*
-    public String insertCollection(String collection){
-	//happens all by itself when a file is added to a non-existant collection
-	return null;
-    }
-    */
-
     public String[] lsDocuments(String database,String collection,String[] args){
 
 	ArrayList<String> buffer=new ArrayList<String>();
@@ -162,11 +155,12 @@ public class MongoIO{
     /**
      * Pull DB document
      * @return JSON representation of Document
+     * TESTED
      */
     public String getDocument(String database,String collection,String docId){
 
 	try{
-	    return client.get("/"+database+"/collections/"+collection+"/"+docId );
+	    return client.get("/databases/"+database+"/collections/"+collection+"/"+docId );
 	}catch(IOException e){
 	    System.out.println("Error: lsCollections "+e.getMessage());
 	    return null;
@@ -176,8 +170,8 @@ public class MongoIO{
     }
 
     /**
-     *
-     * Insert 
+     * TESTED
+     * Insert Object into the Database (after converted using Gson)
      */
     public String insertDocument(String database,String collection,Object object){
 	Gson gson=new Gson();
@@ -198,10 +192,15 @@ public class MongoIO{
 
     /**
      * DELETE /databases/{database}/collections/{collection}/{_id}
-     *
+     * TESTED
      */
-    public String deleteDocument(String docId){
-	return null;
+    public String deleteDocument(String database,String collection,String docId){
+	try{
+	    return client.delete("/databases/"+database+"/collections/"+collection+"/"+docId );
+	}catch(IOException e){
+	    System.out.println("Error: lsCollections "+e.getMessage());
+	    return null;
+	}
     }
 
     /**

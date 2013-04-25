@@ -56,24 +56,33 @@ public class AppTest
 	MongoIO mio = new Client(secret).getMongoIO();
 	System.out.println(mio.lsDatabases());
 
-	mio.insertDocument("gludb","Two",mio);
-	mio.insertDocument("gludb","zero",mio);
-
-	ArrayList<MongoCollection> collections = mio.lsCollections("gludb");
-	Iterator<MongoCollection> it=collections.iterator();
-
-	System.out.println("AppTest: Collections:");
-	while(it.hasNext()){
-	    String collectionName=it.next().toString();
-	    System.out.println("\r\n"+collectionName+" Documents:" );
-
-	    String[] documentList = mio.lsDocuments("gludb",collectionName,null);//not passing args
-	    if(documentList.length==0)
-		System.out.println("Empty Collection :-(");
-	    for(int i=0;i<documentList.length;i++)
-		System.out.println(documentList[i]);
+	{//insert documents into Collections
+	    mio.insertDocument("gludb","Two",mio);
+	    mio.insertDocument("gludb","zero",mio);
 	}
 
+
+	{//pull/delete Document(s) from DB
+	    System.out.println( "Pulled From Zero by ID:"+mio.getDocument("gludb","zero","5178b5a9e4b0fd93d3620523") );
+	    System.out.println("Deleted By ID:"+mio.deleteDocument("gludb","zero","5178b5a9e4b0fd93d3620523"));
+	}
+
+	{//print Collections & Contents of each
+	    ArrayList<MongoCollection> collections = mio.lsCollections("gludb");
+	    Iterator<MongoCollection> it=collections.iterator();
+
+	    System.out.println("AppTest: Collections:");
+	    while(it.hasNext()){
+		String collectionName=it.next().toString();
+		System.out.println("\r\n"+collectionName+" Documents:" );
+		
+		String[] documentList = mio.lsDocuments("gludb",collectionName,null);//not passing args
+		if(documentList.length==0)
+		    System.out.println("Empty Collection :-(");
+		for(int i=0;i<documentList.length;i++)
+		    System.out.println(documentList[i]);
+	    }
+	}
 
 
         assertTrue( true );
