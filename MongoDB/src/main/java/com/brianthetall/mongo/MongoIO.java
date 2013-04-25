@@ -1,5 +1,7 @@
 package com.brianthetall.mongo;
 
+import java.lang.NullPointerException;
+import java.util.StringTokenizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedReader;
@@ -10,6 +12,8 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.JsonParseException;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /** REST-API Interface
  * Used for communicating with the MongoLab DB-service
@@ -41,28 +45,12 @@ public class MongoIO{
     /**
      * List tables in this DB
      */
-    /*
-    public String lsCollections(String database){
-
-	try{
-	    return client.get("/databases/"+database+"/collections");
-	}catch(IOException e){
-	    System.out.println("Error: lsCollections "+e.getMessage());
-	    return null;
-	}
-
-    }
-    */
-
-    /**
-     * List tables in this DB
-     */
     public ArrayList<MongoCollection> lsCollections(String database){
 
 	String jsonResult=null;
 	try{
 	    jsonResult = client.get("/databases/"+database+"/collections");
-	    System.out.println("MongoIO.jsonResult="+jsonResult);
+	    //	    System.out.println("MongoIO.jsonResult="+jsonResult);
 	}catch(IOException e){
 	    System.out.println("Error: lsCollections "+e.getMessage());
 	    return null;
@@ -73,28 +61,38 @@ public class MongoIO{
 	try{
 	    
 	    JsonParser jp = jf.createJsonParser(jsonResult);
-	    while(jp.nextToken() !=null){
-		String temp=jp.nextValue().toString();
 
-		if( temp.equals("END_ARRAY") ){
-
-		    System.out.println("MongoIO:"+temp);
-
-		}else if( temp.equals("VALUE_STRING") ){
-
-		    System.out.println("MongoIO:"+temp);
-		    jp.nextToken();
-		    retval.ensureCapacity(retval.size()+1);//stupid
-		    retval.add(new MongoCollection(jp.nextTextValue()));
-
+	    JsonToken jt=jp.nextToken();
+	    while(jt != null){
+		//		System.out.println("MongoIO: TokenName="+jt.toString());
+		if( jt == JsonToken.END_OBJECT ){
+		    
+		}else if( jt == JsonToken.START_ARRAY){
+		    
+		    String value=null;
+		    while( ( value=jp.nextTextValue() ) != null){
+		    
+			retval.ensureCapacity(retval.size()+1);
+			retval.add(new MongoCollection(value));
+		    }
+		    
 		}
+		jt=jp.nextToken();
 	    }
+
+	    jp.close();
+
+	    /*
+	    Gson gson=new Gson();
+	    System.out.println("GSON of MongoCOllection (does private still come through?:"+gson.toJson(retval.get(0))    );
+	    */
+
 	}catch(JsonParseException e){
 	    System.out.println(e.getMessage());
 	}catch(IOException e){
 	    System.out.println(e.getMessage());
 	}
-	
+	retval.trimToSize();
 	return retval;
     }
 
@@ -106,9 +104,56 @@ public class MongoIO{
 	return null;
     }
 
-    public String lsDocuments(String database,String collection,String[] args){
-	
-	return null;
+    public String[] lsDocuments(String database,String collection,String[] args){
+
+	ArrayList<String> buffer=new ArrayList<String>();
+	String jsonResult=null;
+	try{
+	    jsonResult = client.get("/databases/"+database+"/collections/"+collection);
+
+	}catch(IOException e){
+	    System.out.println(e.getMessage());
+	}
+
+	//Find char-indexes of the commas that are surrounded by } {
+	//delimit by "},{"
+	int cursor=2;//skip START JSON symbol
+	int indexOfInterest=0;
+
+	//	System.out.println("Length="+jsonResult.length());
+	while(true && jsonResult.length()>4){
+	    
+	    indexOfInterest = jsonResult.indexOf("} , {",cursor+5);
+	    if(indexOfInterest!=-1){
+		//		System.out.println("Cursor="+cursor+" IndexOfInterest="+indexOfInterest);
+		//System.out.println(jsonResult.substring(cursor,indexOfInterest+1));
+		buffer.ensureCapacity(buffer.size()+1);
+		buffer.add(jsonResult.substring(cursor,indexOfInterest+1));
+		cursor=indexOfInterest+4;
+	    }else{
+
+		indexOfInterest = jsonResult.indexOf("} ]");
+		if( indexOfInterest!=-1 ){
+		    //System.out.println(jsonResult.substring(cursor,indexOfInterest+1));
+		    buffer.ensureCapacity(buffer.size()+1);
+		    buffer.add(jsonResult.substring(cursor,indexOfInterest+1));
+		    cursor=indexOfInterest;
+		    if(cursor==indexOfInterest){
+			//System.out.println("abouttoBreak");
+			break;
+		    }
+		}
+
+	    }
+	}
+	buffer.trimToSize();
+	String[] retval=new String[buffer.size()];
+	try{
+	    buffer.toArray(retval);
+	}catch(Exception e){
+	    System.out.println(e.getMessage());
+	}
+	return retval;
     }
 
     /**

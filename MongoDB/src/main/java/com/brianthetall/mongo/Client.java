@@ -158,14 +158,14 @@ public class Client {
 	String temp;
 	try{
 	    while( (temp=br.readLine()) != null){
-		System.out.println("Client"+temp);
+		//		System.out.println("Client"+temp);
 		sb.append(temp);
 	    }
 	}catch(IOException e){
 	    System.out.println(e.getMessage() + " Client-reading-reply");
 	}
 	String retval = sb.toString();
-	System.out.println("Client.retval="+retval);
+	//	System.out.println("Client.retval="+retval);
         return retval;
     }
 }

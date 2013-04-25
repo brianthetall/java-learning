@@ -61,9 +61,20 @@ public class AppTest
 	ArrayList<MongoCollection> collections = mio.lsCollections("gludb");
 	Iterator<MongoCollection> it=collections.iterator();
 
-	System.out.println("AppTest:");
+	System.out.println("AppTest: Collections:");
 	while(it.hasNext()){
-	    System.out.println( it.next().toString() );
+	    String collectionName=it.next().toString();
+	    System.out.println( collectionName+" Documents:" );
+
+	    String[] documentList = mio.lsDocuments("gludb",collectionName,null);//not passing args
+	    for(int i=0;i<documentList.length;i++)
+		System.out.println(documentList[i]);
+
+	    /*
+	    Iterator<MongoDocument> ite = docs.iterator();
+	    while(ite.hasNext())
+		System.out.println( ite.next().toString());
+	    */
 	}
 
         assertTrue( true );
