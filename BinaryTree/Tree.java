@@ -47,14 +47,12 @@ public class Tree{
 		System.out.println("Invalid Entry Exception");
 	}
 
+	/*
 	for(int i=0;i<tree.length;i++)
 	    System.out.println("["+i+"] Value="+tree[i].getValue()+" Max Under This:"+tree[i].getMaxValue() );
-	
-	/*
-	Value temp=tree[0];
-	int runningTotal=temp.
-	tree[0].getMaxObject()
 	*/
+	System.out.println("Max Sum of This Triangle-File="+tree[0].getMaxValue());
+	
 	/**
 	 * Start at first row above bottom row
 	 * Set the Min/Max instance variables
