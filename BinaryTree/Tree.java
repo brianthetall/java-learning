@@ -14,56 +14,35 @@ public class Tree{
     private int numberOfRows;
 
     public Tree(ArrayList<Integer> values, int rowCount){
+
 	tree = new Value[values.size()];
 
-	System.out.println("Rows:"+rowCount);
+	//	System.out.println("Rows:"+rowCount);
 
-	for(int i=0;i<tree.length;i++){
-	    tree[i]=new Value(values.get(i).intValue());
+	for(int i=0;i<tree.length;i++){//populate tree with Value objects
+	    tree[i]=new Value(values.get(i).intValue());//only Value.value is set
 	}
 
-	int cursor=tree.length;
+	int cursor=tree.length-(rowCount+1);//start on 2nd row from bottom
+	int currentRow=rowCount-1;
+	for(int j=rowCount-1 ; j>0 ; j--){
+
+	    //	    System.out.println("Row:"+currentRow+" Cursor="+cursor);
+
+	    for(int i=cursor ; i > cursor-currentRow ; i--){
+		//test the IO; should print out values, in reverse order
+		//		System.out.println(tree[i].getValue()+" ["+i+"]");
+		tree[i].setLeft(tree[i+currentRow]);
+		tree[i].setRight(tree[i+currentRow+1]);
+	    }
+
+	    cursor -= currentRow;
+	    currentRow--;
+	}
+
+	for(int i=0;i<tree.length;i++)
+	    System.out.println("["+i+"] "+tree[i].toString());
 	
-	/*
-	for(int j=1 ; j<rowCount ; j++){
-	    for(int i=tree.length-(rowCount-j+1)*j ; i>tree.length-rowCount-rowCount-1 ; i--){
-	*/	
-	/*
-	    tree[i].setLeft(tree[i+1]);
-	    tree[i].setRight(tree[i+2]);
-	    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	    tree[i+1].setLeft(tree[i+3]);
-	    tree[i+1].setRight(tree[i+4]);
-
-	    tree[i+2].setLeft(tree[i+4]);
-	    tree[i+2].setRight(tree[i+5]);
-	    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	    tree[i+3].setLeft(tree[i+6]);
-	    tree[i+3].setRight(tree[i+7]);
-	    
-	    4:7;
-	    4:8;
-	    
-	    5:8;
-	    5:9;
-	    ;;;;;;;;;;;;;;;;;;;;;;;;
-	    6:10;
-	    6:11;
-
-	    7:11;
-	    7:12;
-
-	    8:12;
-	    8:13;
-	    
-	    9:13;
-	    9:14;
-	   
-	    tree[i].setLeft(tree[i+
-
-	}
-	*/
-
 	/**
 	 * Start at first row above bottom row
 	 * Set the Min/Max instance variables
