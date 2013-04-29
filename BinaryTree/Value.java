@@ -4,7 +4,13 @@ public class Value{
     private Value left,right;
 
     public Value(int value){
+	if(value<0){
+	    System.out.println("Invalid Negative Value Input");
+	    System.exit(-2);
+	}
 	this.value=value;
+	maxValueBelowThisNode=-1;//numbers are not allows to be negative
+	minValueBelowThisNode=-1;
     }
 
     public void setLeft(Value left){
@@ -16,7 +22,11 @@ public class Value{
     }
 
     public int getValue(){return value;}
-    public int getMaxValue(){return maxValueBelowThisNode;}
+    
+    public int getMaxValue(){
+	return maxValueBelowThisNode;
+    }
+    
     public int getMinValue(){return minValueBelowThisNode;}
 
 }
