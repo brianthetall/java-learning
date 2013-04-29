@@ -23,26 +23,38 @@ public class Tree{
 	    tree[i]=new Value(values.get(i).intValue());//only Value.value is set
 	}
 
-	int cursor=tree.length-(rowCount+1);//start on 2nd row from bottom
-	int currentRow=rowCount-1;
-	for(int j=rowCount-1 ; j>0 ; j--){
-
-	    //	    System.out.println("Row:"+currentRow+" Cursor="+cursor);
-
-	    for(int i=cursor ; i > cursor-currentRow ; i--){
-		//test the IO; should print out values, in reverse order
-		//		System.out.println(tree[i].getValue()+" ["+i+"]");
-		tree[i].setLeft(tree[i+currentRow]);
-		tree[i].setRight(tree[i+currentRow+1]);
+	{//build the tree by linking the list
+	    int cursor=tree.length-(rowCount+1);//start on 2nd row from bottom
+	    int currentRow=rowCount-1;
+	    for(int j=rowCount-1 ; j>0 ; j--){
+		
+		//	    System.out.println("Row:"+currentRow+" Cursor="+cursor);
+		
+		for(int i=cursor ; i > cursor-currentRow ; i--){
+		    //test the IO; should print out values, in reverse order
+		    //		System.out.println(tree[i].getValue()+" ["+i+"]");
+		    tree[i].setLeft(tree[i+currentRow]);
+		    tree[i].setRight(tree[i+currentRow+1]);
+		}
+		
+		cursor -= currentRow;
+		currentRow--;
 	    }
+	}
 
-	    cursor -= currentRow;
-	    currentRow--;
+	for(int i=tree.length-1;i>=0;i--){
+	    if(false == tree[i].findMaxValue())//run from bottom up
+		System.out.println("Invalid Entry Exception");
 	}
 
 	for(int i=0;i<tree.length;i++)
-	    System.out.println("["+i+"] "+tree[i].toString());
+	    System.out.println("["+i+"] Value="+tree[i].getValue()+" Max Under This:"+tree[i].getMaxValue() );
 	
+	/*
+	Value temp=tree[0];
+	int runningTotal=temp.
+	tree[0].getMaxObject()
+	*/
 	/**
 	 * Start at first row above bottom row
 	 * Set the Min/Max instance variables
@@ -50,10 +62,6 @@ public class Tree{
 	 * The Root node is the solution
 	 */
 
-    }
-
-    private int resolveRow(int index){
-	return -1;//for now...
     }
 
     public static void main(String args[]){

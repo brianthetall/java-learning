@@ -26,7 +26,27 @@ public class Value{
     public int getValue(){return value;}
     public int getLeftValue(){return left.getValue();}
     public int getRightValue(){return right.getValue();}
+
+    public Value getMaxObject(){
+	return left.getMaxValue()>right.getMaxValue() ? left : right;
+    }
     
+    public boolean findMaxValue(){
+
+	if(left==null && right==null){
+	    maxValueBelowThisNode=value;
+	    return true;//this is bottom row Value
+	}
+	else if(left==null || right==null)
+	    return false;//this is a not permitted condition
+	else{
+	    maxValueBelowThisNode=value;
+
+	    maxValueBelowThisNode += left.getMaxValue()>right.getMaxValue() ? left.getMaxValue() : right.getMaxValue();
+	    return true;
+	}
+	
+    }
     public int getMaxValue(){
 	return maxValueBelowThisNode;
     }
