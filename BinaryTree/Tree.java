@@ -15,9 +15,7 @@ public class Tree{
 
     public Tree(ArrayList<Integer> values, int rowCount){
 
-	tree = new Value[values.size()];
-
-	//	System.out.println("Rows:"+rowCount);
+	tree = new Value[values.size()];//setup memory to hold Values
 
 	for(int i=0;i<tree.length;i++){//populate tree with Value objects
 	    tree[i]=new Value(values.get(i).intValue());//only Value.value is set
@@ -27,12 +25,8 @@ public class Tree{
 	    int cursor=tree.length-(rowCount+1);//start on 2nd row from bottom
 	    int currentRow=rowCount-1;
 	    for(int j=rowCount-1 ; j>0 ; j--){
-		
 		//	    System.out.println("Row:"+currentRow+" Cursor="+cursor);
-		
 		for(int i=cursor ; i > cursor-currentRow ; i--){
-		    //test the IO; should print out values, in reverse order
-		    //		System.out.println(tree[i].getValue()+" ["+i+"]");
 		    tree[i].setLeft(tree[i+currentRow]);
 		    tree[i].setRight(tree[i+currentRow+1]);
 		}
@@ -51,30 +45,21 @@ public class Tree{
 	for(int i=0;i<tree.length;i++)
 	    System.out.println("["+i+"] Value="+tree[i].getValue()+" Max Under This:"+tree[i].getMaxValue() );
 	*/
-	System.out.println("Max Sum of This Triangle-File="+tree[0].getMaxValue());
-	
-	/**
-	 * Start at first row above bottom row
-	 * Set the Min/Max instance variables
-	 * Keep doing this for every row going up
-	 * The Root node is the solution
-	 */
+	System.out.println("Max Sum of This Triangle-File="+tree[0].getMaxValue());//print ANSWER
 
     }
 
     public static void main(String args[]){
-		/**
-		 * Count the # of rows during the file READin
-		 */
+
 	if(args.length!=1){
-	    System.out.println("Tree <input file of ints>");
+	    System.out.println("Tree <triangle input file of ints>");
 	    System.exit(-1);
 	}
 
 	ArrayList<Integer> buffer=null;
 	int rows=0;
 
-	try{
+	try{//Load file into ArrayList, record number of rows & create a Tree-object
 	    int rowCount=0;
 	    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(args[0]))));
 	    buffer=new ArrayList<Integer>(1);
@@ -86,23 +71,17 @@ public class Tree{
 		buffer.ensureCapacity(buffer.size() + (++rowCount));
 		try{
 		    while(true)
-			buffer.add(new Integer(st.nextToken()));
+			buffer.add(new Integer(st.nextToken()));//add value into List
 		}catch(NoSuchElementException e){
 		    //there are no more tokens in this tokenizer
 		    //ignore Exception and let While-loop continue
 		}
 	    }
-
-	    /*Works!
-	    System.out.println("Buffer.size="+buffer.size());
-	    for(int i=0;i<buffer.size();i++)
-		System.out.print(buffer.get(i).toString()+" ");
-	    */
 	    
 	}catch(IOException e){
 	    System.out.println("File Err"+e.getMessage());
 	}
 
-	new Tree(buffer,rows);
+	new Tree(buffer,rows);//create Tree with List & number of rows
     }
 }
