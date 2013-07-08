@@ -1,23 +1,24 @@
+//import java.lang.ClassCastException;
+
 public class Heap<T extends Comparable>{
 
-    public static class Node<T extends Comparable>{
+    public static class Node<T extends Comparable> implements Comparable{
 	T t;
-	Node[] nodes;
 
-	public Node(T t,int children){
+	public Node(T t){
 	    this.t=t;
-	    if(children>0)
-		nodes=new Node[children];
 	}
 
-	public boolean addChild(Node<T> t){
-	    for(Node<T> child:nodes){
-		if(child==null){
-		    child=t;
-		    return true;
-		}
-	    }
-	    return false;
+	@Override
+	public int compareTo(Object node){
+	    if(node==null)
+		return -1;
+	    Node<T> temp=(Node<T>)node;
+	    return temp.getValue().equals(t) ? 0 : temp.getValue().compareTo(t) > 0 ? 1 : -1;
+	}
+
+	public T getValue(){
+	    return t;
 	}
 
 	public String toString(){  return t.toString();	}
@@ -25,9 +26,11 @@ public class Heap<T extends Comparable>{
     //++++++++++++++++++++++++++++++++++++END NODE CLASS=================================
     private Node[] data;
     private int cursor;
+    private int base;
 
-    public Heap(int size){
+    public Heap(int size,int base){
 	cursor=0;
+	this.base=base;
 	if(size>0)
 	    data=new Node[size];
 	else
@@ -38,20 +41,31 @@ public class Heap<T extends Comparable>{
 
 	if(index<=0)
 	    return -1;
-	boolean odd = index%0==0?false:true;
-	int parent=index/2;
-	return odd?parent:parent-1;
+
+	int parent=index/base;
+	boolean lastChild = index%base==0?true:false;
+	return lastChild?parent-1:parent;
 	
     }
 
+    private void heapup(int index){
+
+	int p=findParent(index);
+	if( p >= 0 && data[index].compareTo(data[p]) < 0 ){
+
+	    System.out.println("SWAP index="+index+"with parent@:"+p);	    
+	    Node<T> temp = data[p];
+	    data[p]=data[index];
+	    data[index]=temp;
+
+	    heapup(p);
+	}
+
+    }
+
     public void add(T t){
-	data[cursor] = new Node<T>(t,2);//2 children
-	data[findParent(cursor)].addChild(data[cursor]);
-
-	//re-structure heap if needed
-	Node<T> temp=data[cursor];
-	//	while(temp
-
+	data[cursor] = new Node<T>(t);
+	heapup(cursor);
 	cursor++;
     }
 
@@ -82,16 +96,17 @@ public class Heap<T extends Comparable>{
 	    System.exit(-1);
 	}
 
-	Heap<Double> heap=new Heap<>(data.length);
 	Double[] data = new Double[args.length];
-
 	for(int i=0;i<data.length;i++)
 	    data[i]=new Double(args[i]);
 
-	for(Double d:data)
-	    heap.add(d);
+	int base=2;
+	Heap<Double> heap=new Heap<>(data.length,base);
 
-	System.out.println(heap);
+	for(Double d:data){
+	    heap.add(d);
+	    System.out.println(heap);
+	}
 	    	
     }
 
