@@ -90,12 +90,29 @@ public class HashMap <K,V>{
     public V get(Object key){
 
 	V retval=null;
-	System.out.println("Object hashcode="+key.hashCode());
-	//System.out.println("Key hashcode="+keyy.hashCode());
 
-	getIndex(key);
+	for(int i=getIndex(key) ; i<data.length ; i++){
+	    if(data[i]!=null){
+		if(data[i].getKey().equals(key)){
+		    if(DEBUG)System.out.println("Correct index="+i);
+		    return (V)data[i].getValue();
+		}
+	    }
+	      
+	}
 
-	//	int index=getIndex(
+	for(int i=0 ; i < getIndex(key) ; i++){
+	    if(data[i]!=null){
+		if(data[i].getKey().equals(key)){
+		    if(DEBUG)System.out.println("Correct index="+i);
+		    return (V)data[i].getValue();
+		}
+	    }
+
+	}
+
+	System.err.println("No Such Key in Map");
+
 	return retval;
 
     }
@@ -110,6 +127,7 @@ public class HashMap <K,V>{
 	int index=getIndex(key);
 
 	Entry<K,V> e = new Entry<>(key,value);
+	//	System.out.println(e.getKey().hashCode());
 
 	if(data[index]==null){//no collision
 	    data[index]=e;
@@ -147,7 +165,6 @@ public class HashMap <K,V>{
 		    return null;
 		}
 	    }
-
 
 	}
 	System.err.println("NO ROOM for: "+e);
@@ -189,13 +206,22 @@ public class HashMap <K,V>{
 	System.out.println("Map.length="+zero.size());
 	zero.put(new String("brian"),new Integer(69));
 	zero.put(new String("Brian"),new Integer(69));
-	zero.put(new String("brian"),new Integer(68));
+	zero.put(new String("brian"),new Integer(68));//test the update of a key's value
 
 	for(int i=0;i<zero.size();i++)
 	    zero.put(new String(new Integer(i).toString()),new Integer(i));
 
 	System.out.println(zero.toString());
-	
+
+	//TEST the HashMap.get()
+	Integer value=zero.get(new String("Brian"));
+	Integer value1=zero.get(new String("brian"));
+	Integer v11=zero.get(new String("11"));
+
+	System.out.println("Brian="+value);
+	System.out.println("brian="+value1);
+	System.out.println("11="+v11);
+
     }
 
 }
