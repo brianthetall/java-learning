@@ -65,7 +65,8 @@ public class HashMap <K,V>{
 	
     }
     //===========================start hash map============
-    //    private int size;
+    
+    private int counter;
     private Entry[] data;
 
     /**
@@ -76,6 +77,7 @@ public class HashMap <K,V>{
     }
 
     public HashMap(int elements){
+	counter=0;
 	//check that elements is a power of 2
 	double log2result=Math.log(elements)/Math.log(2);
 	boolean powerOfTwo = Double.compare(0.0,log2result - new Double(log2result).intValue())==0 ? true:false;
@@ -124,10 +126,16 @@ public class HashMap <K,V>{
      */
     public V put(K key,V value){
 
+	if(counter > data.length/2){
+	    resize();
+	    return put(key,value);
+	}
+	else
+	    counter++;
+
 	int index=getIndex(key);
 
 	Entry<K,V> e = new Entry<>(key,value);
-	//	System.out.println(e.getKey().hashCode());
 
 	if(data[index]==null){//no collision
 	    data[index]=e;
@@ -199,7 +207,7 @@ public class HashMap <K,V>{
     }
 
     /**
-     * Double the size of the map
+     * Double the size of the map & repopulate the map
      */
     private void resize(){
 
@@ -235,22 +243,22 @@ public class HashMap <K,V>{
 	zero.put(new String("Brian"),new Integer(69));
 	zero.put(new String("brian"),new Integer(68));//test the update of a key's value
 
-	for(int i=0;i<zero.size();i++)
+	for(int i=0;i<Integer.MAX_VALUE;i++)
+	//	for(int i=0;i<1000000;i++)
 	    zero.put(new String(new Integer(i).toString()),new Integer(i));
 
-	System.out.println(zero.toString());
+	//	System.out.println(zero.toString());
 
 	//TEST the HashMap.get()
 	Integer value=zero.get(new String("Brian"));
 	Integer value1=zero.get(new String("brian"));
 	Integer v11=zero.get(new String("11"));
 
+	/*
 	System.out.println("Brian="+value);
 	System.out.println("brian="+value1);
 	System.out.println("11="+v11);
-
-	zero.resize();
-	System.out.println(zero.toString());
+	*/
 
     }
 
