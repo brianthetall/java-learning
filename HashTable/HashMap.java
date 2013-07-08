@@ -4,6 +4,8 @@ import java.lang.Integer;
 
 public class HashMap <K,V>{
 
+    private static final boolean DEBUG=false;
+
     public static class Entry<K,V>{
 	
 	private K k;
@@ -111,7 +113,7 @@ public class HashMap <K,V>{
 
 	if(data[index]==null){//no collision
 	    data[index]=e;
-	    System.out.println("NoCollision:"+e);
+	    if(DEBUG)System.out.println("NoCollision:"+e);
 	    return null;
 	}
 	else{//collision
@@ -120,13 +122,13 @@ public class HashMap <K,V>{
 		    if(data[i].getKey().equals(key)){
 			V retval=(V)data[i].getValue();
 			data[i]=e;
-			System.out.println("Overwrote-to:"+e.toString());
+			if(DEBUG)System.out.println("Overwrote-to:"+e.toString());
 			return retval;
 		    }
 		}
 		else{//data[i] == null
 		    data[i]=e;
-		    System.out.println("Collision:"+e.toString());
+		    if(DEBUG)System.out.println("Collision:"+e.toString());
 		    return null;
 		}
 	    }
@@ -135,20 +137,20 @@ public class HashMap <K,V>{
 		    if(data[i].getKey().equals(key)){
 			V retval=(V)data[i].getValue();
 			data[i]=e;
-			System.out.println("Overwrote-to:"+e.toString());
+			if(DEBUG)System.out.println("Overwrote-to:"+e.toString());
 			return retval;
 		    }
 		}
 		else{//data[i] == null
 		    data[i]=e;
-		    System.out.println("Collision:"+e.toString());
+		    if(DEBUG)System.out.println("Collision:"+e.toString());
 		    return null;
 		}
 	    }
 
 
 	}
-
+	System.err.println("NO ROOM for: "+e);
 	return data[getIndex(key)].getValue()==null ? null : (V)(data[getIndex(key)].getValue());
     }
 
@@ -167,8 +169,6 @@ public class HashMap <K,V>{
 
 	String retval="";
 	for(int i=0;i<data.length;i++){
-
-	    retval=retval.concat(i+"\r\n");
 	    if(data[i]!=null)
 		retval=retval.concat("Index["+i+"] "+data[i].toString()+"\r\n");
 	}
@@ -177,17 +177,19 @@ public class HashMap <K,V>{
 
     public static void main(String args[]){
 
-	//	HashMap<String,Integer>[] maps=new HashMap<String,Integer>[args.length];
 	//cant have arrays of Generics... thanks Java.
+	if(args.length!=1){
+	    System.err.println("HashMap <size> (size must be a power of 2 or default will be 128");
+	    System.exit(-1);
+	}
 
-	HashMap<String,Integer> zero=new HashMap<String,Integer>(256);
-	//	HashMap<String,Integer> one=new HashMap<String,Integer>();
+	Integer size=new Integer(args[0]);
+	HashMap<String,Integer> zero=new HashMap<String,Integer>(size.intValue());
+
 	System.out.println("Map.length="+zero.size());
-	//	zero.put(new String("brian"),new Integer(26));
-	//	zero.put(new String("brianWagner"),new Integer(450));
-	//	System.out.println(zero.toString());
-	//	zero.put(new String("brian"),new Integer(69));
-	//	System.out.println(zero.toString());
+	zero.put(new String("brian"),new Integer(69));
+	zero.put(new String("Brian"),new Integer(69));
+	zero.put(new String("brian"),new Integer(68));
 
 	for(int i=0;i<zero.size();i++)
 	    zero.put(new String(new Integer(i).toString()),new Integer(i));
