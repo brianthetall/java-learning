@@ -4,7 +4,7 @@ import java.lang.Integer;
 
 public class HashMap <K,V>{
 
-    private static final boolean DEBUG=false;
+    private static final boolean DEBUG=true;
 
     public static class Entry<K,V>{
 	
@@ -65,7 +65,7 @@ public class HashMap <K,V>{
 	
     }
     //===========================start hash map============
-    private int size;
+    //    private int size;
     private Entry[] data;
 
     /**
@@ -167,7 +167,9 @@ public class HashMap <K,V>{
 	    }
 
 	}
-	System.err.println("NO ROOM for: "+e);
+	//	System.err.println("NO ROOM for: "+e);
+	resize();
+	put(key,value);
 	return data[getIndex(key)].getValue()==null ? null : (V)(data[getIndex(key)].getValue());
     }
 
@@ -190,6 +192,31 @@ public class HashMap <K,V>{
 		retval=retval.concat("Index["+i+"] "+data[i].toString()+"\r\n");
 	}
 	return retval;
+    }
+
+    public Entry[] getArray(){
+	return data;
+    }
+
+    /**
+     * Double the size of the map
+     */
+    private void resize(){
+
+	System.out.println("Resizing Map, current size="+data.length);
+	if(data.length*2 <= Integer.MAX_VALUE){
+
+	    HashMap<K,V> newMap=new HashMap<>(data.length*2);
+	    for(Entry<K,V> e : data){
+		if(e!=null)
+		    newMap.put(e.getKey(),e.getValue());
+	    }
+	    data = newMap.getArray();
+
+	}
+	else
+	    System.err.println("Hashmap is a max-size!");
+
     }
 
     public static void main(String args[]){
@@ -221,6 +248,9 @@ public class HashMap <K,V>{
 	System.out.println("Brian="+value);
 	System.out.println("brian="+value1);
 	System.out.println("11="+v11);
+
+	zero.resize();
+	System.out.println(zero.toString());
 
     }
 
