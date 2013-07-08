@@ -106,38 +106,47 @@ public class HashMap <K,V>{
     public V put(K key,V value){
 
 	int index=getIndex(key);
-	//	System.out.println("hashmap.put():\r\nindex="+index);
 
 	Entry<K,V> e = new Entry<>(key,value);
-	//	System.out.println(e.toString());
 
-	if(data[index]==null){
-	    //	    System.out.println("null at data["+index+"]");
+	if(data[index]==null){//no collision
 	    data[index]=e;
-	    //	    System.out.println(data[index].toString());
+	    System.out.println("NoCollision:"+e);
 	    return null;
 	}
-
-	//collision
-	else{
-	    //check if the key lives here
-	    
+	else{//collision
 	    for(int i=index;i<data.length;i++){
 		if(data[i]!=null){
 		    if(data[i].getKey().equals(key)){
 			V retval=(V)data[i].getValue();
 			data[i]=e;
+			System.out.println("Overwrote-to:"+e.toString());
 			return retval;
 		    }
-			
 		}
-		else{
+		else{//data[i] == null
 		    data[i]=e;
+		    System.out.println("Collision:"+e.toString());
 		    return null;
 		}
-		
 	    }
-	    
+	    for(int i=0;i<index;i++){
+		if(data[i]!=null){
+		    if(data[i].getKey().equals(key)){
+			V retval=(V)data[i].getValue();
+			data[i]=e;
+			System.out.println("Overwrote-to:"+e.toString());
+			return retval;
+		    }
+		}
+		else{//data[i] == null
+		    data[i]=e;
+		    System.out.println("Collision:"+e.toString());
+		    return null;
+		}
+	    }
+
+
 	}
 
 	return data[getIndex(key)].getValue()==null ? null : (V)(data[getIndex(key)].getValue());
@@ -157,10 +166,12 @@ public class HashMap <K,V>{
     public String toString(){
 
 	String retval="";
-	for(int i=0;i<data.length;i++)
-	    if(data[i]!=null)
-		retval=retval.concat("Index["+i+" "+data[i].toString()+"\r\n");
+	for(int i=0;i<data.length;i++){
 
+	    retval=retval.concat(i+"\r\n");
+	    if(data[i]!=null)
+		retval=retval.concat("Index["+i+"] "+data[i].toString()+"\r\n");
+	}
 	return retval;
     }
 
@@ -169,16 +180,16 @@ public class HashMap <K,V>{
 	//	HashMap<String,Integer>[] maps=new HashMap<String,Integer>[args.length];
 	//cant have arrays of Generics... thanks Java.
 
-	HashMap<String,Integer> zero=new HashMap<String,Integer>(512);
+	HashMap<String,Integer> zero=new HashMap<String,Integer>(256);
 	//	HashMap<String,Integer> one=new HashMap<String,Integer>();
 	System.out.println("Map.length="+zero.size());
-	zero.put(new String("brian"),new Integer(26));
-	zero.put(new String("brianWagner"),new Integer(450));
-	System.out.println(zero.toString());
-	zero.put(new String("brian"),new Integer(69));
-	System.out.println(zero.toString());
+	//	zero.put(new String("brian"),new Integer(26));
+	//	zero.put(new String("brianWagner"),new Integer(450));
+	//	System.out.println(zero.toString());
+	//	zero.put(new String("brian"),new Integer(69));
+	//	System.out.println(zero.toString());
 
-	for(int i=0;i<1024;i++)
+	for(int i=0;i<zero.size();i++)
 	    zero.put(new String(new Integer(i).toString()),new Integer(i));
 
 	System.out.println(zero.toString());
