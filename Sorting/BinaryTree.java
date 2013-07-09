@@ -32,7 +32,7 @@ public class BinaryTree<T extends Comparable>{
 
     public void add(T t,Node r){
 	if(r == null){
-	    r = new Node(t);
+	    r = new Node<T>(t);
 	    size++;
 	    System.out.println("Node Added:"+r);
 	}
@@ -45,22 +45,43 @@ public class BinaryTree<T extends Comparable>{
 
     }
 
-    private void traverse(Node n){
-
+    /**
+     * Balance the binary tree
+     * Run periodically to ensure log(n) search,insertion times
+     * But not too often, as it is expensive
+     */
+    public void balance(){
+	/*
+	  
+	 */
     }
 
+    /**
+     * Traverse from smallest node, to largest
+     * @param n Root node, from which the traversal should start
+     */
+    private void traverse(Node n){
+	traverse(n.getLeft());
+	System.out.println(n);
+	traverse(n.getRight());
+    }
+
+    /**
+     * Sort this Binary Tree
+     * @return array of Nodes in sorted order, low-to-high
+     */
     public Node[] sort(){
 	Node[] retval=new Node[size];
-	//traverse
+	//use traverse to do this
 	return null;
     }
 
     private String BFS_toString(Node n){
 
-	//	String left = n.getLeft()==null ? "":BFS_toString(n.getLeft());
-	//	String right = n.getRight()==null ? "":BFS_toString(n.getRight());
+	String left = n.getLeft()==null ? "":BFS_toString(n.getLeft());
+	String right = n.getRight()==null ? "":BFS_toString(n.getRight());
 
-	return n.value().toString();//+" "+left+" "+right;
+	return n.value().toString()+" "+left+" "+right;
     }
 
     public String toString(){
