@@ -139,7 +139,6 @@ public class Heap<T extends Comparable>{
 	    int p2=(int)(Math.log(i+1)/Math.log(base));
 	    Double d=new Double(Math.log(i+1)/Math.log(base));
 
-	    //	    System.out.println("p2="+p2+" d="+d);
 	    if( d-p2==0 )
 		r=r.concat("|");
 
@@ -192,11 +191,6 @@ public class Heap<T extends Comparable>{
 	Object[] sorted = heap.sort();
 	for(Object o:sorted)
 	    System.out.println(o);
-	//	Double[] dsorted=new Double[sorted.length];
-	//	for(int i=0;i<dsorted.length;i++)
-	//	    dsorted[i] = (Double)sorted[i];
-	//	for(Double d:dsorted)
-	//	    System.out.print(d+", ");
 
     }
 
