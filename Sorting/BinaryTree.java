@@ -7,8 +7,10 @@ public class BinaryTree<T extends Comparable>{
 
 	public Node(T t){this.t=t;}
 
+	public void setParent(Node n){parent=n;}
 	public void setLeft(Node n){left=n;}
 	public void setRight(Node n){right=n;}
+	public Node getParent(){return parent;}
 	public Node getLeft(){return left;}
 	public Node getRight(){return right;}
 
@@ -27,20 +29,22 @@ public class BinaryTree<T extends Comparable>{
     }
 
     public void add(T t){
-	add(t,root);
+	add(t,root,null);
     }
 
-    public void add(T t,Node r){
+    public void add(T t,Node r,Node parent){
 	if(r == null){
 	    r = new Node<T>(t);
 	    size++;
 	    System.out.println("Node Added:"+r);
+	    //set parent's pointer
+	    r.setParent(parent);//parent pointer set in child
 	}
 	else{
 	    if(t.compareTo(r.value()) < 0)
-		add(t,r.getLeft());
+		add(t,r.getLeft(),r);
 	    else
-		add(t,r.getRight());
+		add(t,r.getRight(),r);
 	}
 
     }
