@@ -61,8 +61,10 @@ public class BinaryTree<T extends Comparable>{
 
 	if(t==null){}//fuck off; do nothing
 
-	else if(this.root==null)
+	else if(this.root==null){
 	    this.root=new Node<T>(t);
+	    size++;
+	}
 
 	else if(root==null){
 	    root=new Node<T>(t);
@@ -70,6 +72,7 @@ public class BinaryTree<T extends Comparable>{
 		root.setParent(parent);
 		parent.setChild(root);
 	    }
+	    size++;
 	}
 	
 	else{//figure out which [left or right] node to pass the value to
@@ -94,6 +97,9 @@ public class BinaryTree<T extends Comparable>{
 	  move out from the middle and build out the tree
 	 */
 	Node[] sorted = sort(root);
+	System.out.println("Balance:");
+	for(Node n:sorted)
+	    System.out.print(n+" ");
 	BinaryTree<T> newTree=new BinaryTree<T>();
 	recursiveBalance(sorted,0,sorted.length,newTree);
 	return newTree;
@@ -102,26 +108,30 @@ public class BinaryTree<T extends Comparable>{
     private void recursiveBalance(Node[] sorted,int start,int stop,BinaryTree tree){
 
 	int length=stop-start;
-	if(length<0){}
+
+	if(length<0 || start<0 || stop<0){}
 	else if(length==0)
 	    tree.add((T)sorted[0].value());
 	else if(length > 0){
+	    for(Node n:sorted)
+		System.out.print(n+" ");
+	    System.out.println("L/2="+length/2);
 	    tree.add((T)sorted[length/2].value());//add median node
 	    recursiveBalance(sorted,start,length/2-1,tree);//left
-	    recursiveBalance(sorted,length/2+1,stop,tree);//right
+	    recursiveBalance(sorted,length/2+1,stop-1,tree);//right
 	}
     }
 
     public void traverse(){
 	System.out.println("Traverse:");
-	traverse(root);
+	traverse(root,null,-1);
     }
 
     /**
      * Traverse from smallest node, to largest
      * @param n Root node, from which the traversal should start
      */
-    private void traverse(Node n){
+    public void traverse(Node n,Node[] populate,int populateIndex){
 
 	Node l,r;
 	if(n==null)
@@ -130,12 +140,15 @@ public class BinaryTree<T extends Comparable>{
 	r=n.getRight();
 
 	if(l!=null)
-	    traverse(n.getLeft());
+	    traverse(n.getLeft(),populate,populateIndex);
 
 	System.out.println(n);
+	if(populate!=null && populateIndex>=0)
+	    populate[      ]=n;///HEREHRHEHREHREHREHREHREHR 
+	//the index is incremented by the recursed calls, but the updated values are not reported to the calling function......
 
 	if(r!=null)
-	    traverse(n.getRight());
+	    traverse(n.getRight(),populate,populateIndex);
     }
 
     /**
@@ -144,9 +157,11 @@ public class BinaryTree<T extends Comparable>{
      */
     public Node[] sort(Node root){
 	Node[] retval=new Node[size];
-	//use traverse to do this
-	traverse(root);//right now traverse has a Println-statement in it
-	return null;
+	traverse(root,retval,0);
+	System.out.println("in sort, results:");
+	for(Node n:retval)
+	    System.out.print(n+" ");
+	return retval;
     }
 
     private String BFS_toString(Node n){
@@ -174,7 +189,8 @@ public class BinaryTree<T extends Comparable>{
 	    tree.add(new Double(s));
 	System.out.println("TREE_DUMP: "+tree);
 	tree.traverse();
-	//	tree = tree.balance();
+	System.out.println("BALANCE:");
+	tree = tree.balance();
     }
 
 }
