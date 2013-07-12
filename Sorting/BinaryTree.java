@@ -234,16 +234,21 @@ public class BinaryTree<T extends Comparable>{
 	BinaryTree<Double> tree=new BinaryTree<>();
 	for(String s:argv)
 	    tree.add(new Double(s));
+
 	System.out.println("TREE_DUMP: "+tree);
 	tree.traverse();
-	System.out.println("BALANCE:");
+
 	Node[] sorted = tree.sort(tree.getRoot());
 	System.out.println("SORTED:");
 	for(Node n:sorted)
 	    System.out.println(n);
+
+	System.out.println("BALANCE:");
 	tree = tree.balance();
+
 	System.out.println("TREE_DUMP: "+tree);
 	System.out.println("");
+
     }
 
 }
