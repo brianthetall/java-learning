@@ -98,9 +98,9 @@ public class BinaryTree<T extends Comparable>{
 	  move out from the middle and build out the tree
 	 */
 	Node[] sorted = sort(root);
-	System.out.println("Balance:");
-	for(Node n:sorted)
-	    System.out.print(n+" ");
+	//	System.out.println("Balance:");
+	//	for(Node n:sorted)
+	//	    System.out.print(n+" ");
 
 	BinaryTree<T> newTree=new BinaryTree<T>();
 	recursiveBalance(sorted,0,sorted.length-1,newTree);
@@ -112,25 +112,26 @@ public class BinaryTree<T extends Comparable>{
 
 	int length=stop-start+1;
 
+	/*
 	if(length==0 || length%2!=0)
 	    System.out.println("\r\nStop="+stop+" Star="+start+" Length="+length+" Length/2="+(length/2));
 	else
 	    System.out.println("\r\nStop="+stop+" Star="+start+" Length="+length+" Length/2-1="+(length/2-1));
-
+	*/
 
 	if(length<0 || start<0 || stop<0){}
 
 	else if(length==1){
-	    System.out.println("adding:"+ (T)sorted[start].value() + " from index:"+start);
+	    //	    System.out.println("adding:"+ (T)sorted[start].value() + " from index:"+start);
 	    tree.add((T)sorted[start].value());
-	    System.out.println("Done Recursing");
+	    //	    System.out.println("Done Recursing");
 	}
 
 	else if(length > 1){
 
 	    if(length%2!=0 || length==0){
 
-		System.out.println("adding:"+ (T)sorted[length/2+start].value() + " from index:"+(length+start/2));
+		//		System.out.println("adding:"+ (T)sorted[length/2+start].value() + " from index:"+(length+start/2));
 		tree.add( (T)sorted[length/2+start].value() );//add median node
 
 		recursiveBalance(sorted,start,length/2+start-1,tree);//left
@@ -138,7 +139,7 @@ public class BinaryTree<T extends Comparable>{
 
 	    }
 	    else{
-		System.out.println("adding:"+ (T)sorted[length/2+start-1].value() + " from index:"+(length/2+start-1));
+		//		System.out.println("adding:"+ (T)sorted[length/2+start-1].value() + " from index:"+(length/2+start-1));
 		tree.add( (T)sorted[length/2-1+start].value() );//add median less node
 
 		recursiveBalance(sorted,start,length/2+start-2,tree);//left
