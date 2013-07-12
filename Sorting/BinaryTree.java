@@ -238,6 +238,9 @@ public class BinaryTree<T extends Comparable>{
 	tree.traverse();
 	System.out.println("BALANCE:");
 	Node[] sorted = tree.sort(tree.getRoot());
+	System.out.println("SORTED:");
+	for(Node n:sorted)
+	    System.out.println(n);
 	tree = tree.balance();
 	System.out.println("TREE_DUMP: "+tree);
 	System.out.println("");
