@@ -1,6 +1,12 @@
 JC=javac
 
-all: Stack HashCodeTests
+all: Stack HashCodeTests Queue HashMap
+
+HashMap:
+	$(JC) HashMap.java
+
+Queue:
+	$(JC) Queue.java
 
 HashCodeTests:
 	$(JC) HashCodeTests.java
