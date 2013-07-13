@@ -11,7 +11,7 @@ public class Graph<T extends Comparable>{
 	    this.t=t;
 	}
 	public T value(){ return t; }
-	public String toString(){ return "Vertex.toString="+t.toString(); }
+	public String toString(){ return t.toString(); }
     }
 
     public static class Edge<T extends Comparable>{
@@ -23,6 +23,7 @@ public class Graph<T extends Comparable>{
 	public Edge(T weight,Edge next,Vertex v){
 	    this.weight=weight;
 	    nextEdge=next;
+	    vertex=v;
 	}
 	public void setNextEdge(Edge next){
 	    nextEdge=next;
@@ -37,7 +38,12 @@ public class Graph<T extends Comparable>{
 	    this.weight=weight;
 	}
 	public String toString(){
-	    return weight.toString();
+	    String r="";
+	    if(weight!=null)
+		r=r.concat("EdgeWeight="+weight.toString());
+	    if(vertex!=null)
+		r=r.concat(" Connected Vertex Weight:"+vertex.toString());
+	    return r;
 	}
 
     }
@@ -64,12 +70,12 @@ public class Graph<T extends Comparable>{
     public boolean addEdge(int a,int b){
 	if(a==b || a<0 || b<0 || vertexs[a]==null || vertexs[b]==null)
 	    return false;
-	 
-	Edge temp= vertexEdges[a]==null ? new Edge(null,null,vertexs[b]) : new Edge(null,vertexEdges[a],vertexs[b]);
+	int defaultWeight=69;
+	Edge temp= vertexEdges[a]==null ? new Edge(defaultWeight,null,vertexs[b]) : new Edge(defaultWeight,vertexEdges[a],vertexs[b]);
 	vertexEdges[a]=temp;
 
 	if(!directed){
-	    Edge temp1= vertexEdges[b]==null ? new Edge(null,null,vertexs[a]) : new Edge(null,vertexEdges[b],vertexs[a]);
+	    Edge temp1= vertexEdges[b]==null ? new Edge(defaultWeight,null,vertexs[a]) : new Edge(defaultWeight,vertexEdges[b],vertexs[a]);
 	    vertexEdges[b]=temp1;
 	}
 
@@ -79,7 +85,13 @@ public class Graph<T extends Comparable>{
     public String toString(){
 	String r="";
 	for(int i=0;i<vertexEdges.length;i++){
-	    
+	    Edge e=vertexEdges[i];
+	    if(e==null)
+		continue;//no edges for this Vertex, i
+	    while(e!=null){
+		r=r.concat("Vertex["+i+"] has edge: "+e.toString()+"\r\n");
+		e=e.getNextEdge();
+	    }
 	}
 	return r;
     }
@@ -87,12 +99,12 @@ public class Graph<T extends Comparable>{
     public static void main(String argv[]){
 
 	Graph g=new Graph(128,true);//set the number of vertexs; directed!
-	g.addVertex(0,69);
-	g.addVertex(4,);
-	g.addVertex(40,);
-	g.addVertex(42,);
-	g.addVertex(3,);
-	g.addVertex(23,);
+	g.addVertex(0,0);
+	g.addVertex(4,4);
+	g.addVertex(40,40);
+	g.addVertex(42,42);
+	g.addVertex(3,3);
+	g.addVertex(23,23);
 
 	g.addEdge(0,4);
 	g.addEdge(0,40);
