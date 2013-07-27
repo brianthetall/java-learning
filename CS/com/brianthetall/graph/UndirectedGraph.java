@@ -1,5 +1,6 @@
 package com.brianthetall.graph;
 
+import java.util.Set;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -20,10 +21,13 @@ public class UndirectedGraph implements GraphInterface{
     private Map<String,Vertex> vertexMap;
     //    private Map<Vertex,List> edgeMap;
 
-    public Vertex.Edge[] getSortedEdges(Vertex root){
-	if(root==null)
-	    return null;
-	Vertex.Edge[] edges=getEdges(root);
+    public int size(){
+	return vertexMap.size();
+    }
+
+    public Vertex.Edge[] getSortedEdges(){
+
+	Vertex.Edge[] edges=getEdges();
 	for(Vertex.Edge test:edges)
 	    System.out.println("EDGE:"+test);
 	List<Vertex.Edge> list=new MergeSort<Vertex.Edge>(edges).sort();
@@ -38,14 +42,18 @@ public class UndirectedGraph implements GraphInterface{
 	return retval;
     }
 
-    //HERE
-    public Vertex.Edge[] getEdges(Vertex root){
-	//Vertex.Edge[] retval=null;
-	List<Vertex.Edge> edges;
-	
-	if(root==null)
-	    return null;
+    private Vertex getVertex(){
+	Iterator<Map.Entry<String,Vertex>> vertexs=vertexMap.entrySet().iterator();
+	if(vertexs.hasNext())
+	    return vertexs.next().getValue();
+	return null;
+    }
 
+    //HERE
+    public Vertex.Edge[] getEdges(){
+
+	List<Vertex.Edge> edges;
+	Vertex root=getVertex();//get random Vertex from the VertexMap
 	Queue q=new Queue();
 	List<Vertex> visited=new ArrayList<Vertex>();
 	visited.add(root);//add root to return List
@@ -227,10 +235,19 @@ public class UndirectedGraph implements GraphInterface{
 	    System.out.println(v);
 	
 	
-	Vertex.Edge[] sortedEdges=g.getSortedEdges(g.getVertex("AU"));//get all Edges!
+	Vertex.Edge[] sortedEdges=g.getSortedEdges();//get all Edges!
 	System.out.println("Sorted EDGES:");
 	for(Vertex.Edge e:sortedEdges)
 	    System.out.println(e);
+
+	UndirectedGraph graph=(UndirectedGraph)g;
+
+	List<Vertex.Edge> minspantree=MinimumSpanningTree.kruskal(graph);
+	System.out.println("Kruskal Min. Spanning Tree");
+	int i=0;
+	for(Vertex.Edge e:minspantree){
+	    System.out.println(i+++":"+e);
+	}
 
 
     }

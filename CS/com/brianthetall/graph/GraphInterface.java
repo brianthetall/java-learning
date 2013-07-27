@@ -131,8 +131,8 @@ public interface GraphInterface{
 	}
     }//END OF VERTEX CLASS
     
-    public Vertex.Edge[] getEdges(Vertex root);
-    public Vertex.Edge[] getSortedEdges(Vertex root);
+    public Vertex.Edge[] getEdges();
+    public Vertex.Edge[] getSortedEdges();
     public Vertex getVertex(String name);
     public void connectNodes(Vertex a,Vertex b);
     public void addVertex(Good good);
