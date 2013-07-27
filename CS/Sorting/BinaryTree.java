@@ -69,7 +69,7 @@ public class BinaryTree<T extends Comparable>{
 
 	else if(root==null){
 	    root=new Node<T>(t);
-	    if(parent!=null){
+	    if(parent!=null){//does this really need to be here?
 		root.setParent(parent);
 		parent.setChild(root);
 	    }
@@ -119,7 +119,7 @@ public class BinaryTree<T extends Comparable>{
 	    System.out.println("\r\nStop="+stop+" Star="+start+" Length="+length+" Length/2-1="+(length/2-1));
 	*/
 
-	if(length<0 || start<0 || stop<0){}
+	if(length<0 || start<0 || stop<0){}//INVALID INPUT CATCH
 
 	else if(length==1){
 	    //	    System.out.println("adding:"+ (T)sorted[start].value() + " from index:"+start);
@@ -129,7 +129,7 @@ public class BinaryTree<T extends Comparable>{
 
 	else if(length > 1){
 
-	    if(length%2!=0 || length==0){
+	    if(length%2!=0 /*|| length==0*/){
 
 		//		System.out.println("adding:"+ (T)sorted[length/2+start].value() + " from index:"+(length+start/2));
 		tree.add( (T)sorted[length/2+start].value() );//add median node
@@ -138,7 +138,7 @@ public class BinaryTree<T extends Comparable>{
 		recursiveBalance(sorted,length/2+start+1,stop,tree);//right
 
 	    }
-	    else{
+	    else{//Odd number of elments
 		//		System.out.println("adding:"+ (T)sorted[length/2+start-1].value() + " from index:"+(length/2+start-1));
 		tree.add( (T)sorted[length/2-1+start].value() );//add median less node
 
@@ -180,9 +180,9 @@ public class BinaryTree<T extends Comparable>{
 	//	System.out.println("populate="+populate+"  cursor="+cursor.intValue());
 
 	if(populate!=null && cursor >= 0){
-	    populate[ cursor     ]=n;///HEREHRHEHREHREHREHREHREHR 
+	    populate[ cursor++     ]=n;
 	    //	    System.out.println("N="+n+" PopulateIndex="+cursor);
-	    cursor++;
+	    //	    cursor++;
 	    //	    System.out.println("PopulateIndex++="+cursor);
 	}
 

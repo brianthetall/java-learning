@@ -1,5 +1,7 @@
 package com.brianthetall.graph;
 
+import java.lang.String;
+
 /**
  * Good - 
  */
@@ -15,6 +17,14 @@ public class Good<K,V extends java.util.Map>{
     public Good(K key,V value){
 	this.key=key;
 	this.value=value;
+    }
+
+    public <T extends Comparable> void addParameter(String name,T t){
+	value.put(name,t);
+    }
+
+    public <T extends Comparable> T getParameter(String name){
+	return (T)value.get(name);
     }
 
     public String toString(){

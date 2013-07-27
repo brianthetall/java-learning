@@ -25,18 +25,23 @@ public class Graph<T extends Comparable>{
 	    nextEdge=next;
 	    vertex=v;
 	}
+
 	public void setNextEdge(Edge next){
 	    nextEdge=next;
 	}
+
 	public Edge getNextEdge(){
 	    return nextEdge;
 	}
+
 	public T getWeight(){
 	    return weight;
 	}
+
 	public void setWeight(T weight){
 	    this.weight=weight;
 	}
+
 	public String toString(){
 	    String r="";
 	    if(weight!=null)
@@ -96,6 +101,18 @@ public class Graph<T extends Comparable>{
 	return r;
     }
 
+    public void dfs(int root){
+	boolean[] undiscovered,discovered,processing;
+	undiscovered=new boolean[MAX_VERTEX];
+	discovered=new boolean[MAX_VERTEX];
+	processing=new boolean[MAX_VERTEX];
+
+    }
+
+    public void bfs(int root){
+
+    }
+
     public static void main(String argv[]){
 
 	Graph g=new Graph(128,true);//set the number of vertexs; directed!
@@ -113,6 +130,9 @@ public class Graph<T extends Comparable>{
 	g.addEdge(23,42);
 
 	System.out.println("GRAPH:\r\n"+g+"\r\n");
+
+	g.dfs();
+	g.bfs();
 
     }
 

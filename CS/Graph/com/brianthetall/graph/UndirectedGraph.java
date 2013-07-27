@@ -3,6 +3,8 @@ package com.brianthetall.graph;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.lang.String;
+import java.lang.Double;
 
 public class UndirectedGraph implements GraphInterface{
 
@@ -37,8 +39,14 @@ public class UndirectedGraph implements GraphInterface{
 
 	GraphInterface g=new UndirectedGraph();
 
-	g.addVertex(new Good<String,Map>("AU",new HashMap()) );
-	g.addVertex(new Good<String,Map>("AG",new HashMap()) );
+	Good<String,? extends Map> gold=new Good<>("AU",new HashMap<String,Double>(16,(float)0.5));
+	Good<String,? extends Map> silver=new Good<>("AG",new HashMap<String,Double>(16,(float)0.5));
+
+	gold.addParameter("Price per ounce", 69.69);
+	System.out.println("get parameter:"+gold.getParameter("Price per ounce")+"\r\n");
+
+	g.addVertex(gold);
+	g.addVertex(silver);
 
 	System.out.println(g.toString());
 
