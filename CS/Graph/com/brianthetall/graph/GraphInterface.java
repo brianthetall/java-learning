@@ -2,6 +2,8 @@ package com.brianthetall.graph;
 
 public interface GraphInterface{
 
+    public Vertex getVertex(String name);
+    public void connectNodes(Vertex a,Vertex b);
     public void addVertex(Good good);
 
     /**
@@ -39,6 +41,10 @@ public interface GraphInterface{
 	    this.good=good;
 	}
 
+	public String getGoodName(){
+	    return (String)good.getKey();
+	}
+
 	public Good getGood(){
 	    return good;
 	}
@@ -47,17 +53,20 @@ public interface GraphInterface{
 	    return good.toString();
 	}
 
-	/*
-	public <? extends Comparable> Edge addEdge(<?> weight){
-	    Edge<?> e=new Edge<>(weight);
-	    Edge last=first;
-	    while(last.next!=null)
-		last=last.next;
-	    last.next=e;
+	public <W extends Comparable> Edge addEdge(W weight, Vertex target){
+	    Edge<W> e=new Edge<>(weight);
+	    if(first==null)
+		first=e;
+	    else{
+		Edge last=first;
+		while(last.next!=null)//traverse linkedlist
+		    last=last.next;
+		last.next=e;
+	    }
+	    e.setTargetVertex(target);
 	    return e;
+	    
 	}
-	*/
-
     }
     
 }

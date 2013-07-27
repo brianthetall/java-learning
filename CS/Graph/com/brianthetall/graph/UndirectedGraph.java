@@ -8,17 +8,28 @@ import java.lang.Double;
 
 public class UndirectedGraph implements GraphInterface{
 
-    Map<String,Good> vertexMap;
+    Map<String,Vertex> vertexMap;
+
+    public Vertex getVertex(String name){
+	return (Vertex)vertexMap.get(name);
+    }
     
     public void addVertex(Good good){
-	
+
 	Vertex v=new Vertex(good);//pass the Name+Map object
-	vertexMap.put( (String)(good.getKey()), (Good)good);
+	vertexMap.put( (String)(good.getKey()),v);
 	
     }
 
+    public void connectNodes(Vertex a,Vertex b){
+
+	a.addEdge(0.23,b);
+	b.addEdge(0.23,a);
+
+    }
+
     public UndirectedGraph(){
-	vertexMap=new HashMap<String,Good>(128,(float)0.5);
+	vertexMap=new HashMap<String,Vertex>(128,(float)0.5);
     }
 
     public String toString(){
@@ -28,7 +39,7 @@ public class UndirectedGraph implements GraphInterface{
 	//for now, use the HashMap iterator to list all vertexs
 
 	//	s=s.concat(
-	Iterator<Good> nodes=vertexMap.values().iterator();
+	Iterator<Vertex> nodes=vertexMap.values().iterator();
 	while(nodes.hasNext())
        	    s=s.concat(nodes.next().toString());
 
@@ -49,6 +60,11 @@ public class UndirectedGraph implements GraphInterface{
 	g.addVertex(silver);
 
 	System.out.println(g.toString());
+
+	//Add edge connecting AU & AG
+	g.connectNodes(g.getVertex("AU"),g.getVertex("AG"));
+
+	//test Graph Traversal?
 
     }
 
