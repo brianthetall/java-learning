@@ -1,3 +1,5 @@
+package com.brianthetall.datastructures;
+
 public class Queue<E>{
 
     public static class Node<E>{

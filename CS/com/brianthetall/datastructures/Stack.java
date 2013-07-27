@@ -1,3 +1,5 @@
+package com.brianthetall.datastructures;
+
 public class Stack{
 
     private Object[] stack;

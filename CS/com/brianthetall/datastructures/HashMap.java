@@ -1,3 +1,5 @@
+package com.brianthetall.datastructures;
+
 import java.lang.Math;
 import java.lang.String;
 import java.lang.Integer;

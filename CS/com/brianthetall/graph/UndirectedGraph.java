@@ -1,14 +1,32 @@
 package com.brianthetall.graph;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.lang.String;
 import java.lang.Double;
+import com.brianthetall.sorting.MergeSort;
 
 public class UndirectedGraph implements GraphInterface{
 
     Map<String,Vertex> vertexMap;
+
+    public Vertex.Edge[] getSortedEdges(){
+	Vertex.Edge[] edges=getEdges();
+	List<Vertex.Edge> list=new MergeSort<Vertex.Edge>(edges).sort();
+	Vertex.Edge[] retval=new Vertex.Edge[list.size()];
+	for(int i=0;i<list.size();i++)
+	    retval[i]=list.get(i);
+	return retval;
+    }
+
+    public Vertex.Edge[] getEdges(){
+	Vertex.Edge[] retval=null;
+	//HERER?!?!?!?!!?
+	return retval;
+    }
 
     public Vertex getVertex(String name){
 	return (Vertex)vertexMap.get(name);
@@ -46,6 +64,18 @@ public class UndirectedGraph implements GraphInterface{
 	return s;
     }
 
+    public List<Vertex> dfs(Vertex root){
+	List<Vertex> retval=new ArrayList<Vertex>();
+
+	return retval;
+    }
+
+    public List<Vertex> bfs(Vertex root){
+	List<Vertex> retval=new ArrayList<Vertex>();
+
+	return retval;
+    }
+
     public static void main(String args[]){
 
 	GraphInterface g=new UndirectedGraph();
@@ -60,11 +90,14 @@ public class UndirectedGraph implements GraphInterface{
 	g.addVertex(silver);
 
 	System.out.println(g.toString());
-
+	
 	//Add edge connecting AU & AG
 	g.connectNodes(g.getVertex("AU"),g.getVertex("AG"));
 
 	//test Graph Traversal?
+	
+	Vertex.Edge[] sortedEdges=g.getSortedEdges();//get all Edges!
+	
 
     }
 
