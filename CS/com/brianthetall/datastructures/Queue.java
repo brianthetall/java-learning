@@ -1,23 +1,23 @@
 package com.brianthetall.datastructures;
 
-public class Queue<E>{
+public class Queue{
 
-    public static class Node<E>{
+    public static class Node{
 
-	private E e;
+	private Object e;
 	private Node prev,next;
 
-	public Node(E e){
+	public Node(Object e){
 	    this(e,null,null);
 	}
 
-	public Node(E e,Node prev,Node next){
+	public Node(Object e,Node prev,Node next){
 	    this.e=e;
 	    this.prev=prev;
 	    this.next=next;
 	}
 
-	public E value(){
+	public Object value(){
 	    return e;
 	}
 
@@ -44,13 +44,13 @@ public class Queue<E>{
     }
     //=================================end node class++++++++++++++++++++++++++++
 
-    Node<E> head,tail;
+    Node head,tail;
 
     public Queue(){}
 
-    public E poll(){
+    public Object poll(){
 
-	E retval=tail.value();
+	Object retval=tail.value();
 	if(tail!=head){
 	    tail.prev().setNext(null);
 	    tail=tail.prev();
@@ -62,14 +62,14 @@ public class Queue<E>{
 	return retval;
     }
 
-    public E peek(){
+    public Object peek(){
 	return tail.value();
     }
 
-    public boolean add(E e){
+    public boolean add(Object e){
 	if(e==null)
 	    return false;
-	Node<E> node=new Node<>(e);
+	Node node=new Node(e);
 
 	if(head==null){
 	    head=node;
@@ -91,7 +91,7 @@ public class Queue<E>{
 	    return null;
 
 	String r="";
-	Node<E> temp=head;
+	Node temp=head;
 	while(temp!=null){
 	    r=r.concat(temp.toString()+"::");
 	    temp=temp.next();
@@ -101,12 +101,14 @@ public class Queue<E>{
     }
 
     public static void main(String argv[]){
-	Queue<String> q=new Queue<>();
+	Queue q=new Queue();
 	q.add(new String("zero"));
 	q.add(new String("one"));
+	q.add(new Double(69.69));
 	q.add(new String("two"));
 	System.out.println(q);
 	System.out.println("PEEK "+q.peek());
+	System.out.println("POLL "+q.poll());
 	System.out.println("POLL "+q.poll());
 	System.out.println("POLL "+q.poll());
 	System.out.println("POLL "+q.poll());

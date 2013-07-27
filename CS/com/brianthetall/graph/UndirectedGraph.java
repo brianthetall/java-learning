@@ -8,10 +8,13 @@ import java.util.Iterator;
 import java.lang.String;
 import java.lang.Double;
 import com.brianthetall.sorting.MergeSort;
+import com.brianthetall.datastructures.Queue;
+import com.brianthetall.datastructures.InfiniteStack;
 
 public class UndirectedGraph implements GraphInterface{
 
-    Map<String,Vertex> vertexMap;
+    private Map<String,Vertex> vertexMap;
+    private Map<Vertex,List> edgeMap;
 
     public Vertex.Edge[] getSortedEdges(){
 	Vertex.Edge[] edges=getEdges();
@@ -66,12 +69,14 @@ public class UndirectedGraph implements GraphInterface{
 
     public List<Vertex> dfs(Vertex root){
 	List<Vertex> retval=new ArrayList<Vertex>();
+	InfiniteStack s=new InfiniteStack();
 
 	return retval;
     }
 
     public List<Vertex> bfs(Vertex root){
 	List<Vertex> retval=new ArrayList<Vertex>();
+	Queue q=new Queue();
 
 	return retval;
     }
