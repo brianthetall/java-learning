@@ -23,6 +23,7 @@ public class MergeSort<T extends Comparable>{
     }
 
     public MergeSort(T[] unorderedArray){
+	list=new ArrayList<T>(unorderedArray.length);
 	for(T t:unorderedArray)
 	    list.add(t);
     }

@@ -1,5 +1,6 @@
 package com.brianthetall.graph;
 
+import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,22 +15,58 @@ import com.brianthetall.datastructures.InfiniteStack;
 
 public class UndirectedGraph implements GraphInterface{
 
-    private Map<String,Vertex> vertexMap;
-    private Map<Vertex,List> edgeMap;
+    Random r;
 
-    public Vertex.Edge[] getSortedEdges(){
-	Vertex.Edge[] edges=getEdges();
+    private Map<String,Vertex> vertexMap;
+    //    private Map<Vertex,List> edgeMap;
+
+    public Vertex.Edge[] getSortedEdges(Vertex root){
+	if(root==null)
+	    return null;
+	Vertex.Edge[] edges=getEdges(root);
+	for(Vertex.Edge test:edges)
+	    System.out.println("EDGE:"+test);
 	List<Vertex.Edge> list=new MergeSort<Vertex.Edge>(edges).sort();
-	Vertex.Edge[] retval=new Vertex.Edge[list.size()];
+
+	Vertex.Edge[] retval = list.toArray(new Vertex.Edge[list.size()]);
+
+	/*	Vertex.Edge[] retval=new Vertex.Edge[list.size()];
 	for(int i=0;i<list.size();i++)
 	    retval[i]=list.get(i);
+	*/
+
 	return retval;
     }
 
-    public Vertex.Edge[] getEdges(){
-	Vertex.Edge[] retval=null;
-	//HERER?!?!?!?!!?
-	return retval;
+    //HERE
+    public Vertex.Edge[] getEdges(Vertex root){
+	//Vertex.Edge[] retval=null;
+	List<Vertex.Edge> edges;
+	
+	if(root==null)
+	    return null;
+
+	Queue q=new Queue();
+	List<Vertex> visited=new ArrayList<Vertex>();
+	visited.add(root);//add root to return List
+
+	edges=root.getEdgeList();
+	for(Vertex.Edge e:edges){//add root's edges to Queue
+	    q.add(e);
+	    //	    System.out.println("Added to Queue: "+e);
+	}
+	while(q.peek()!=null){
+	    Vertex.Edge temp=(Vertex.Edge)q.poll();
+	    if(visited.contains(temp.getTarget()))//that target Vertex is already hit
+		continue;
+	    //	    System.out.println("BFS:Vertex::"+temp.getTarget());
+	    visited.add(temp.getTarget());
+	    List<Vertex.Edge> edgesL=temp.getTarget().getEdgeList();
+	    edges.addAll(edgesL);
+	    for(Vertex.Edge e:edgesL)//add edges to Queue
+		q.add(e);
+	}
+	return edges.toArray(new Vertex.Edge[edges.size()]);
     }
 
     public Vertex getVertex(String name){
@@ -45,13 +82,16 @@ public class UndirectedGraph implements GraphInterface{
 
     public void connectNodes(Vertex a,Vertex b){
 
-	a.addEdge(0.23,b);
-	b.addEdge(0.23,a);
+	Double weight=r.nextDouble();
+	
+	a.addEdge(weight,b);
+	b.addEdge(weight,a);
 
     }
 
     public UndirectedGraph(){
 	vertexMap=new HashMap<String,Vertex>(128,(float)0.5);
+	r=new Random();
     }
 
     public String toString(){
@@ -68,7 +108,6 @@ public class UndirectedGraph implements GraphInterface{
 	return s;
     }
 
-    //HERE
     public List<Vertex> dfs(Vertex root){
 
 	if(root==null)
@@ -188,8 +227,11 @@ public class UndirectedGraph implements GraphInterface{
 	    System.out.println(v);
 	
 	
-	//	Vertex.Edge[] sortedEdges=g.getSortedEdges();//get all Edges!
-	
+	Vertex.Edge[] sortedEdges=g.getSortedEdges(g.getVertex("AU"));//get all Edges!
+	System.out.println("Sorted EDGES:");
+	for(Vertex.Edge e:sortedEdges)
+	    System.out.println(e);
+
 
     }
 

@@ -19,6 +19,7 @@ public interface GraphInterface{
 	 */
 	public static class Edge<W extends Comparable>implements Comparable{
 	    Vertex target;
+	    final Vertex start;
 	    Edge next;
 	    W weight;
 
@@ -26,7 +27,7 @@ public interface GraphInterface{
 		if(o==null)
 		    return false;
 		Edge e=(Edge)o;
-		if(target.equals(e.getTarget()) && next.equals(e.getNext()) && weight.equals(e.getWeight()) )
+		if(start.equals(e.getStart()) && target.equals(e.getTarget()) && weight.equals(e.getWeight()) )
 		    return true;
 		return false;
 	    }
@@ -40,8 +41,11 @@ public interface GraphInterface{
 		return hash;
 	    }
 
-	    public int compareTo(Object w){
-		W weight=(W)w;
+	    public int compareTo(Object e)throws NullPointerException{
+		if(e==null)
+		    throw new NullPointerException("Comparing Edge to null!\r\n");
+		Edge edge=(Edge)e;
+		W weight=(W)edge.getWeight();
 		if(this.weight.compareTo(weight)<0)
 		    return -1;
 		else if(this.weight.compareTo(weight)==0)
@@ -51,24 +55,25 @@ public interface GraphInterface{
 
 	    public Vertex getTarget(){return target;}
 
+	    public Vertex getStart(){return start;}
+
 	    public Edge getNext(){return next;}
 
 	    public W getWeight(){return weight;}
 
-	    public void setTargetVertex(Vertex v){
-		target=v;
-	    }
+	    public void setTargetVertex(Vertex v){target=v;}
 	    
 	    public void linkEdge(Edge e){
 		next=e;
 	    }
 	    
-	    public Edge(W weight){
+	    public Edge(W weight,Vertex start){
 		this.weight=weight;
+		this.start=start;
 	    }
 
 	    public String toString(){
-		return "TargetVertex="+target.toString()+" Weight="+weight.toString();
+		return "Start="+start+"TargetVertex="+target.toString()+" Weight="+weight.toString();
 	    }
 	    
 	}
@@ -111,7 +116,7 @@ public interface GraphInterface{
 	}
 
 	public <W extends Comparable> Edge addEdge(W weight, Vertex target){
-	    Edge<W> e=new Edge<>(weight);
+	    Edge<W> e=new Edge<>(weight,this);
 	    if(first==null)
 		first=e;
 	    else{
@@ -126,8 +131,8 @@ public interface GraphInterface{
 	}
     }//END OF VERTEX CLASS
     
-    public Vertex.Edge[] getEdges();
-    public Vertex.Edge[] getSortedEdges();
+    public Vertex.Edge[] getEdges(Vertex root);
+    public Vertex.Edge[] getSortedEdges(Vertex root);
     public Vertex getVertex(String name);
     public void connectNodes(Vertex a,Vertex b);
     public void addVertex(Good good);
