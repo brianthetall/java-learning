@@ -123,19 +123,38 @@ public class UndirectedGraph implements GraphInterface{
 
 	GraphInterface g=new UndirectedGraph();
 
-	Good<String,? extends Map> gold=new Good<>("AU",new HashMap<String,Double>(16,(float)0.5));
-	Good<String,? extends Map> silver=new Good<>("AG",new HashMap<String,Double>(16,(float)0.5));
+	List<Good> goods=new ArrayList<Good>();
+	goods.add(new Good<String,HashMap>("AU",new HashMap<String,Double>(16,(float)0.5)).addParameter("Price per ounce", 69.69));
+	goods.add(new Good<String,HashMap>("AG",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("GOOG",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("AAPL",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("INTL",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("IBM",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("PIGFEET",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("PORKLOIN",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("CHICKENFEET",new HashMap<String,Double>(16,(float)0.5)));
+	goods.add(new Good<String,HashMap>("GAS",new HashMap<String,Double>(16,(float)0.5)));
 
-	gold.addParameter("Price per ounce", 69.69);
-	System.out.println("get parameter:"+gold.getParameter("Price per ounce")+"\r\n");
-
-	g.addVertex(gold);
-	g.addVertex(silver);
+	for(Good good:goods)
+	    g.addVertex(good);
 
 	System.out.println(g.toString());
 	
 	//Add edge connecting AU & AG
 	g.connectNodes(g.getVertex("AU"),g.getVertex("AG"));
+	g.connectNodes(g.getVertex("GOOG"),g.getVertex("AU"));
+	g.connectNodes(g.getVertex("GOOG"),g.getVertex("AAPL"));
+	g.connectNodes(g.getVertex("GOOG"),g.getVertex("INTL"));
+	g.connectNodes(g.getVertex("GOOG"),g.getVertex("IBM"));
+	g.connectNodes(g.getVertex("AAPL"),g.getVertex("INTL"));
+	g.connectNodes(g.getVertex("AAPL"),g.getVertex("IBM"));
+	g.connectNodes(g.getVertex("INTL"),g.getVertex("IBM"));
+	g.connectNodes(g.getVertex("PIGFEET"),g.getVertex("AU"));
+	g.connectNodes(g.getVertex("PIGFEET"),g.getVertex("PORKLOIN"));
+	g.connectNodes(g.getVertex("PIGFEET"),g.getVertex("CHICKENFEET"));
+	g.connectNodes(g.getVertex("PORKLOIN"),g.getVertex("CHICKENFEET"));
+	g.connectNodes(g.getVertex("GAS"),g.getVertex("AU"));
+
 
 	//test Graph Traversal?
 	List<Vertex> dfsTraversed = g.dfs(g.getVertex("AU"));

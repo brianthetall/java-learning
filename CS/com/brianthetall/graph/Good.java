@@ -19,8 +19,12 @@ public class Good<K,V extends java.util.Map>{
 	this.value=value;
     }
 
-    public <T extends Comparable> void addParameter(String name,T t){
+    /** Builder Pattern
+     * Add a parameter into this Good's Map of properties
+     */
+    public <T extends Comparable> Good addParameter(String name,T t){
 	value.put(name,t);
+	return this;
     }
 
     public <T extends Comparable> T getParameter(String name){
