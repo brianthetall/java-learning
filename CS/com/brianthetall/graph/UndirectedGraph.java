@@ -111,11 +111,30 @@ public class UndirectedGraph implements GraphInterface{
     }
 
     public List<Vertex> bfs(Vertex root){
-	List<Vertex> retval=new ArrayList<Vertex>();
+
+	if(root==null)
+	    return null;
+
 	Queue q=new Queue();
-	//q.add(Object o);
-	//q.peek() , q.poll()
-	
+	List<Vertex> retval=new ArrayList<Vertex>();
+	retval.add(root);//add root to return List
+
+	System.out.println("BFS:Vertex::"+root);
+	List<Vertex.Edge> edges=root.getEdgeList();
+	for(Vertex.Edge e:edges){//add root's edges to Queue
+	    q.add(e);
+	    System.out.println("Added to Queue: "+e);
+	}
+	while(q.peek()!=null){
+	    Vertex.Edge temp=(Vertex.Edge)q.poll();
+	    if(retval.contains(temp.getTarget()))//that target Vertex is already hit
+		continue;
+	    System.out.println("BFS:Vertex::"+temp.getTarget());
+	    retval.add(temp.getTarget());
+	    List<Vertex.Edge> edgesL=temp.getTarget().getEdgeList();
+	    for(Vertex.Edge e:edgesL)//add edges to Queue
+		q.add(e);
+	}
 	return retval;
     }
 
@@ -156,11 +175,18 @@ public class UndirectedGraph implements GraphInterface{
 	g.connectNodes(g.getVertex("GAS"),g.getVertex("AU"));
 
 
-	//test Graph Traversal?
+	//TEST DFS
 	List<Vertex> dfsTraversed = g.dfs(g.getVertex("AU"));
 	System.out.println("DFS:");
 	for(Vertex v:dfsTraversed)
 	    System.out.println(v);
+
+	//TEST BFS
+	List<Vertex> bfsTraversed = g.bfs(g.getVertex("AU"));
+	System.out.println("BFS:");
+	for(Vertex v:bfsTraversed)
+	    System.out.println(v);
+	
 	
 	//	Vertex.Edge[] sortedEdges=g.getSortedEdges();//get all Edges!
 	

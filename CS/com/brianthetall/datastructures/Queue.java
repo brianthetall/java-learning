@@ -50,10 +50,10 @@ public class Queue{
 
     public Object poll(){
 
-	Object retval=tail.value();
+	Object retval=head.value();
 	if(tail!=head){
-	    tail.prev().setNext(null);
-	    tail=tail.prev();
+	    head=head.prev();
+	    head.setNext(null);//in front of line
 	}
 	else{
 	    head=null;
@@ -61,9 +61,11 @@ public class Queue{
 	}
 	return retval;
     }
-
+    //cool
     public Object peek(){
-	return tail.value();
+	if(head==null)
+	    return null;
+	return head.value();
     }
 
     public boolean add(Object e){
@@ -78,9 +80,10 @@ public class Queue{
 	}
 
 	else{
-	    tail.setNext(node);
-	    node.setPrev(tail);
-	    tail=tail.next();
+	    tail.setPrev(node);
+	    node.setNext(tail);
+	    node.setPrev(null);//its at back of line
+	    tail=node;
 	    return true;
 	}
     }
@@ -94,7 +97,7 @@ public class Queue{
 	Node temp=head;
 	while(temp!=null){
 	    r=r.concat(temp.toString()+"::");
-	    temp=temp.next();
+	    temp=temp.prev();
 	}
 	
 	return r;
