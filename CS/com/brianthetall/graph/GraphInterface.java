@@ -1,6 +1,7 @@
 package com.brianthetall.graph;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public interface GraphInterface{
 
@@ -75,6 +76,18 @@ public interface GraphInterface{
 	
 	public Vertex(Good good){
 	    this.good=good;
+	}
+
+	public List<Edge> getEdgeList(){
+	    if(first==null)
+		return null;
+	    List<Edge> retval=new ArrayList<Edge>();
+	    Edge e=first;
+	    while(e!=null){
+		retval.add(e);
+		e=e.getNext();
+	    }
+	    return retval;
 	}
 
 	public String getGoodName(){

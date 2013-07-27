@@ -9,6 +9,7 @@ import java.lang.String;
 import java.lang.Double;
 import com.brianthetall.sorting.MergeSort;
 import com.brianthetall.datastructures.Queue;
+import com.brianthetall.datastructures.Stack;
 import com.brianthetall.datastructures.InfiniteStack;
 
 public class UndirectedGraph implements GraphInterface{
@@ -67,17 +68,54 @@ public class UndirectedGraph implements GraphInterface{
 	return s;
     }
 
+    //HERE
     public List<Vertex> dfs(Vertex root){
-	List<Vertex> retval=new ArrayList<Vertex>();
-	InfiniteStack s=new InfiniteStack();
 
+	if(root==null)
+	    return null;
+	
+	List<Vertex> retval=new ArrayList<Vertex>();
+	Stack s=new InfiniteStack();
+	List<Vertex.Edge> edges=root.getEdgeList();
+	for(Vertex.Edge e:edges)
+	    s.push(e);
+	System.out.println("Root:"+root);
+	retval.add(root);//first element in list is ROOT
+	dfs(retval,s);
+
+	return retval;
+    }
+
+    /** Partner to public-dfs
+     */
+    private List<Vertex> dfs(List<Vertex> retval, Stack stack){
+
+	Vertex.Edge current=(Vertex.Edge)stack.pop();
+
+	while(current!=null){
+
+	    if(retval.contains(current.getTarget()))
+		current=(Vertex.Edge)stack.pop();
+
+	    else{//evaluate; this touches something new
+		System.out.println("Vertex: "+current.getTarget());
+		retval.add(current.getTarget());//add to RETVAL
+
+		List<Vertex.Edge> newEdges=current.getTarget().getEdgeList();
+		for(Vertex.Edge e:newEdges)
+		    stack.push(e);//add new edges to STACK
+		current=(Vertex.Edge)stack.pop();		
+	    }
+	}
 	return retval;
     }
 
     public List<Vertex> bfs(Vertex root){
 	List<Vertex> retval=new ArrayList<Vertex>();
 	Queue q=new Queue();
-
+	//q.add(Object o);
+	//q.peek() , q.poll()
+	
 	return retval;
     }
 
@@ -100,8 +138,12 @@ public class UndirectedGraph implements GraphInterface{
 	g.connectNodes(g.getVertex("AU"),g.getVertex("AG"));
 
 	//test Graph Traversal?
+	List<Vertex> dfsTraversed = g.dfs(g.getVertex("AU"));
+	System.out.println("DFS:");
+	for(Vertex v:dfsTraversed)
+	    System.out.println(v);
 	
-	Vertex.Edge[] sortedEdges=g.getSortedEdges();//get all Edges!
+	//	Vertex.Edge[] sortedEdges=g.getSortedEdges();//get all Edges!
 	
 
     }
