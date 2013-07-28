@@ -61,7 +61,10 @@ public interface GraphInterface{
 
 	    public W getWeight(){return weight;}
 
-	    public void setTargetVertex(Vertex v){target=v;}
+	    public Edge setTargetVertex(Vertex v){
+		target=v;
+		return this;
+	    }
 	    
 	    public void linkEdge(Edge e){
 		next=e;

@@ -14,6 +14,7 @@ public class MinimumSpanningTree{
 	GraphInterface.Vertex.Edge[] sorted=graph.getSortedEdges();
 	Set visited=new HashSet(graph.size()*2,(float)0.6);
 	List<GraphInterface.Vertex.Edge> retval=new ArrayList<GraphInterface.Vertex.Edge>(sorted.length);
+	List<GraphInterface.Vertex.Edge> bridges=new ArrayList<GraphInterface.Vertex.Edge>();
 
 	for(GraphInterface.Vertex.Edge e:sorted){
 
@@ -24,8 +25,13 @@ public class MinimumSpanningTree{
 	      clusters can wind up existing; non-spanning condition
 	     */
 
-	    if( visited.contains(e.getStart()) && visited.contains(e.getTarget()) )//both Vertexs already added
+	    if( visited.contains(e.getStart()) && visited.contains(e.getTarget()) ){//both Vertexs already added
+		if(!retval.contains(new GraphInterface.Vertex.Edge(e.getWeight(),e.getTarget()).setTargetVertex(e.getStart()))){
+		    if(!bridges.contains(new GraphInterface.Vertex.Edge(e.getWeight(),e.getTarget()).setTargetVertex(e.getStart())))
+			bridges.add(e);//add only if this isnt an instance of an edge already in retval
+		}
 		continue;
+	    }
 	    else if(visited.contains(e.getStart())){
 		retval.add(e);
 		visited.add(e.getTarget());
@@ -40,6 +46,11 @@ public class MinimumSpanningTree{
 		visited.add(e.getTarget());
 	    }
 	}
+
+	System.out.println("Bridges:");
+	for(GraphInterface.Vertex.Edge bridge:bridges)
+	    System.out.println(bridge);
+
 	return retval;
     }
 
