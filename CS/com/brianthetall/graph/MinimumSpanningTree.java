@@ -12,15 +12,17 @@ public class MinimumSpanningTree{
     public static List<GraphInterface.Vertex.Edge> kruskal(UndirectedGraph graph){
 
 	GraphInterface.Vertex.Edge[] sorted=graph.getSortedEdges();
-
 	Set visited=new HashSet(graph.size()*2,(float)0.6);
-	
 	List<GraphInterface.Vertex.Edge> retval=new ArrayList<GraphInterface.Vertex.Edge>(sorted.length);
 
 	for(GraphInterface.Vertex.Edge e:sorted){
 
-	    if(visited.size() == graph.size()-1)
-		break;//we have enough edges to form the spanning tree
+	    //	    if(visited.size() == graph.size()-1)
+	    //		break;//we have enough edges to form the spanning tree
+
+	    /*
+	      clusters can wind up existing; non-spanning condition
+	     */
 
 	    if( visited.contains(e.getStart()) && visited.contains(e.getTarget()) )//both Vertexs already added
 		continue;
@@ -37,9 +39,7 @@ public class MinimumSpanningTree{
 		visited.add(e.getStart());
 		visited.add(e.getTarget());
 	    }
-	    
 	}
-
 	return retval;
     }
 
