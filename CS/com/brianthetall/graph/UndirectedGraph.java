@@ -205,7 +205,7 @@ public class UndirectedGraph implements GraphInterface{
 	for(Good good:goods)
 	    g.addVertex(good);
 
-	System.out.println(g.toString());
+	//	System.out.println(g.toString());
 	
 	//Add edge connecting AU & AG
 	g.connectNodes(g.getVertex("AU"),g.getVertex("AG"));

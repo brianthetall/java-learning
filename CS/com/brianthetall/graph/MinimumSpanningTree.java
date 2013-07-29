@@ -74,7 +74,7 @@ public class MinimumSpanningTree{
 	clusters.get(0).add(sorted[0].getStart());//the ROOT cluster get these Vertex's
 	clusters.get(0).add(sorted[0].getTarget());
 
-	System.out.println("Edge:"+sorted[0]+" to Cluster:"+clusters.get(0));
+	//System.out.println("Edge:"+sorted[0]+" to Cluster:"+clusters.get(0));
 
 	for(int i=2;i<sorted.length;i+=2){//FOR SORTED EDGE LIST, STARTING @ 1
 	    
@@ -90,7 +90,7 @@ public class MinimumSpanningTree{
 		visited.add(sorted[i].getStart());
 		retval.add(sorted[i]);
 
-		System.out.println("Edge:"+sorted[i]+" Making new Cluster:"+virginCluster);
+		//System.out.println("Edge:"+sorted[i]+" Making new Cluster:"+virginCluster);
 		
 	    }else if(owners.size()==1){//if one vertex is in this Cluster, add the other vertex to this cluster
 		
@@ -100,15 +100,15 @@ public class MinimumSpanningTree{
 		visited.add(sorted[i].getStart());
 		retval.add(sorted[i]);
 
-		System.out.println("Edge:"+sorted[i]+" Causing something to be added into CLuster:"+owners.get(0));
+		//System.out.println("Edge:"+sorted[i]+" Causing something to be added into CLuster:"+owners.get(0));
 		
 	    }else if(owners.size()==2 && owners.get(0).equals(owners.get(1)) ){//if both vertexs are in the same Cluster, this is a garbage-edge
-		System.out.println("WASTE EDGE:"+sorted[i]);
+		//System.out.println("WASTE EDGE:"+sorted[i]);
 		;
 	    }else if(owners.size()==2){//if both vertexs are in different Clusters, merge the clusters into the Cluster with lowest index; converge to ROOT
 
 		retval.add(sorted[i]);//THIS EDGE IS PART OF MST
-		System.out.println("Edge:"+sorted[i]+" Merging Clusters:"+owners.get(0)+" & "+owners.get(1));
+		//System.out.println("Edge:"+sorted[i]+" Merging Clusters:"+owners.get(0)+" & "+owners.get(1));
 
 		if(owners.contains(clusters.get(0))){//merge to ROOT
 		    
