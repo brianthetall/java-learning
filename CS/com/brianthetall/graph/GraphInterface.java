@@ -76,7 +76,8 @@ public interface GraphInterface{
 	    }
 
 	    public String toString(){
-		return "Start="+start+"TargetVertex="+target.toString()+" Weight="+weight.toString();
+		//TODO: there must be a better way to format this.......
+		return "Start="+start+"\t\tTargetVertex="+target.toString()+"\tWeight="+weight.toString();
 	    }
 	    
 	}
