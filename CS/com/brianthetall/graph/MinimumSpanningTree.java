@@ -33,8 +33,6 @@ public class MinimumSpanningTree{
 
 	public void add(V v){
 	    visited.add(v);//FOR FAST-FAILURE
-	    //	    if( visited.add(v)==false )
-		//		throw new Exception(v.toString()+" is already in Cluster-"+clusterId);
 	}
 
 	public void merge(Cluster c){
@@ -65,7 +63,6 @@ public class MinimumSpanningTree{
 	List<GraphInterface.Vertex.Edge> retval=new ArrayList<GraphInterface.Vertex.Edge>(sorted.length);//List of MST Edges
 	List<Cluster<GraphInterface.Vertex>> clusters = new ArrayList<Cluster<GraphInterface.Vertex>>();//List of Clusters
 	clusters.add(new Cluster());//Root cluster
-	//	List<GraphInterface.Vertex.Edge> possibleBridges=new ArrayList<>();//List of Possible Bridge Edges
 
 	Set<GraphInterface.Vertex> visited=new HashSet<>(16,(float)0.5);//O(1) search will be useful
 	retval.add(sorted[0]);//the shortest is always used; helps get things started
@@ -114,18 +111,16 @@ public class MinimumSpanningTree{
 		    
 		    if(owners.get(0).equals(clusters.get(0))){
 			owners.get(0).merge(owners.get(1));
-			//			owners.remove(1);//must remove it from the clusters-list . not the owners-list !!!!!!!!!!! HERE
 			clusters.remove(owners.get(1));
 		    }
 		    else{
 			owners.get(1).merge(owners.get(0));
-			//			owners.remove(0);
 			clusters.remove(owners.get(0));
 		    }
 		    
 		}else{//merge to dont care
 		    owners.get(0).merge(owners.get(1));
-		    //		    owners.remove(1);
+
 		    clusters.remove(owners.get(1));
 		}
 		

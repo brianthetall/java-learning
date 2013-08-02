@@ -222,7 +222,7 @@ public class UndirectedGraph implements GraphInterface{
 	g.connectNodes(g.getVertex("PORKLOIN"),g.getVertex("CHICKENFEET"));
 	g.connectNodes(g.getVertex("GAS"),g.getVertex("AU"));
 
-	/*
+	
 	{//TEST DFS
 	    List<Vertex> dfsTraversed = g.dfs(g.getVertex("AU"));
 	    System.out.println("\r\nDFS:");
@@ -244,7 +244,7 @@ public class UndirectedGraph implements GraphInterface{
 	    for(Vertex.Edge e:sortedEdges)
 		System.out.println(e);
 	}
-	*/
+	
 
 	{//TEST MIN-SPANNING-TREE.Kruskal
 	    UndirectedGraph graph=(UndirectedGraph)g;
