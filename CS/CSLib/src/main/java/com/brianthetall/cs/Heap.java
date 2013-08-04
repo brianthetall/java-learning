@@ -1,4 +1,4 @@
-package com.brianthetall.sorting;
+package com.brianthetall.cs;
 
 public class Heap<T extends Comparable>{
 

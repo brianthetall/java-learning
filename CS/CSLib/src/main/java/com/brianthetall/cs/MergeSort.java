@@ -1,4 +1,4 @@
-package com.brianthetall.sorting;
+package com.brianthetall.cs;
 
 import java.util.Iterator;
 import java.util.List;

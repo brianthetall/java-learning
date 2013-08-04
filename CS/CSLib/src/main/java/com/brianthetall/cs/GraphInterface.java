@@ -1,4 +1,4 @@
-package com.brianthetall.graph;
+package com.brianthetall.cs;
 
 import java.util.List;
 import java.util.ArrayList;

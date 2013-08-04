@@ -1,4 +1,4 @@
-package com.brianthetall.datastructures;
+package com.brianthetall.cs;
 
 import com.brianthetall.datastructures.Stack;
 

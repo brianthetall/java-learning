@@ -1,4 +1,4 @@
-package com.brianthetall.datastructures;
+package com.brianthetall.cs;
 
 import java.lang.Math;
 import java.lang.String;
