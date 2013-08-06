@@ -1,6 +1,6 @@
 package com.brianthetall.cs;
 
-import com.brianthetall.datastructures.Stack;
+import com.brianthetall.cs.Stack;
 
 public class FiniteStack implements Stack{
 

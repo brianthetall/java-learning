@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.lang.String;
 import java.lang.Double;
-import com.brianthetall.sorting.MergeSort;
-import com.brianthetall.datastructures.Queue;
-import com.brianthetall.datastructures.Stack;
-import com.brianthetall.datastructures.InfiniteStack;
+import com.brianthetall.cs.MergeSort;
+import com.brianthetall.cs.Queue;
+import com.brianthetall.cs.Stack;
+import com.brianthetall.cs.InfiniteStack;
 
 public class UndirectedGraph implements GraphInterface{
 
