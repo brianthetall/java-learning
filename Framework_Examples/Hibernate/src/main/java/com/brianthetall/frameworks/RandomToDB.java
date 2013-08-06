@@ -6,12 +6,14 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-
 import java.lang.Integer;
 import java.lang.String;
 import java.security.SecureRandom;
-import javax.persistence.*;
-//import javax.persistence.;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
 
 public class RandomToDB{
 
@@ -20,9 +22,13 @@ public class RandomToDB{
     @Entity
 	@Table(name="RandomTable")
 	public static class DataBean{
+
+	    @Id
+		@GeneratedValue
+		@Column(name="id")
+		private int id;
 	    
-	    @Id /*@GeneratedValue*/
-		@Column(name="name")
+	    @Column(name="name")
 		private String name;
 
 	    @Column(name="intValue")
@@ -30,6 +36,8 @@ public class RandomToDB{
 
 	    @Column(name="doubleValue")
 		private double d_data;
+
+	    DataBean(){}
 
 	    public DataBean(String name)throws NullPointerException{
 		if(name==null)
@@ -43,7 +51,8 @@ public class RandomToDB{
 	    public String toString(){
 		return name+" "+r_data+" "+d_data;
 	    }
-
+	    
+	    public void setName(String s){name=s;}
 	    public void setInt(int i){r_data=i;}
 	    public void setDouble(double d){d_data=d;}
 	    public String getName(){return name;}
@@ -66,13 +75,18 @@ public class RandomToDB{
 
     }
 
-    public String add(DataBean b){
+    /**
+     * Write a bean to the database, return its ID in the DB-Table
+     * @param b DataBean to persist in mySQL
+     * @return SQL generated, auto-incrementing ID
+     */
+    public Integer add(DataBean b){
 	Session session=factory.openSession();
-	String id=null;
+	Integer id=null;
 	Transaction tx=null;
 	try{
 	    tx=session.beginTransaction();
-	    id=(String)session.save(b);
+	    id=(Integer)session.save(b);
 	    tx.commit();
 	    System.out.println("Added:"+b);
 	}catch(HibernateException e){
@@ -84,12 +98,21 @@ public class RandomToDB{
 	return id;
     }
     
-    public void update(String id,int i,double d){
+    /**
+     * Update value by ID.
+     * @param id Serializable SQL index for object
+     * @name new name, null if no change
+     * @param i new integer update
+     * @param d new double update
+     */
+    public void update(Integer id,String name,int i,double d){
 	Session session = factory.openSession();
 	Transaction tx = null;
 	try{
 	    tx = session.beginTransaction();
 	    DataBean bean = (DataBean)session.get(DataBean.class, id);
+	    if(name!=null)
+		bean.setName(name);
 	    bean.setInt(i);
 	    bean.setDouble(d);
 	    session.update(bean);
@@ -102,7 +125,7 @@ public class RandomToDB{
 	}
     }
     
-    public DataBean get(String id){
+    public DataBean get(Integer id){
 	Session session=factory.openSession();
 	Transaction tx=null;
 	DataBean retval=null;
@@ -118,11 +141,12 @@ public class RandomToDB{
 	return retval;
     }
 
-    public void delete(String id){
+    public void delete(Integer id){
 	Session session = factory.openSession();
 	Transaction tx = null;
 	try{
 	    tx = session.beginTransaction();
+	    System.out.println("DeleteID="+id);
 	    DataBean bean=(DataBean)session.get(DataBean.class,id);
 	    session.delete(bean);
 	    tx.commit();
