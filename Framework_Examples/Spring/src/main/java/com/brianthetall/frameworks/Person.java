@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Import;
 import java.lang.String;
 //import javax.inject.Inject;
 
-@Import(Canned.class)
 @Service public class Person implements UserBean{
 
     private String name;

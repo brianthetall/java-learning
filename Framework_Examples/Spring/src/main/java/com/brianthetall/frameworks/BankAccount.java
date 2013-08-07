@@ -1,14 +1,24 @@
 package com.brianthetall.frameworks;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
+import org.springframework.stereotype.*;
+import org.springframework.beans.annotation.*;
+import org.springframework.context.annotation.*;
 
-@Service public class BankAccount{
+//@Component
+@Service 
+public class BankAccount{
     
     private UserBean owner;
     private Account account;
 
     public BankAccount(){}
+
+    public String toString(){
+	return owner.toString()+","+account.toString();
+    }
 
     public UserBean getOwner(){return owner;}
     public Account getAccount(){return account;}
