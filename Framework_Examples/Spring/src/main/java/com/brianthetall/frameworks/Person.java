@@ -5,17 +5,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import java.lang.String;
+//import javax.inject.Inject;
 
 @Import(Canned.class)
 @Service public class Person implements UserBean{
 
     private String name;
+    //  @Inject private Canned can;
+    
     public Person(){
 	//	name=new String("CannedString");
     }
-        
-    @Autowired public void setName(String name){
+
+    /*
+    public Person(String name){
 	this.name=name;
+    }
+    */
+
+    @Autowired public Person setName(String name){
+	this.name=name;
+	return this;
     }
 
     public String getName(){return name;}

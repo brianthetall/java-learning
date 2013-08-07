@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
     private Account account;
 
     public BankAccount(){}
-    public BankAccount(UserBean owner,Account account){
-	this.owner=owner;
-	this.account=account;
-    }
 
     public UserBean getOwner(){return owner;}
     public Account getAccount(){return account;}
 
+    /**
+     * can setters return 'this'; builder pattern
+     */
     @Autowired public void setOwner(UserBean owner){
 	this.owner=owner;
     }

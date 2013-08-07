@@ -7,7 +7,8 @@ import org.junit.Ignore;
 import org.junit.Assert;
 import org.springframework.beans.factory.BeanFactory;//?
 import org.springframework.context.ApplicationContext;//?
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+//import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class BankAccountTest{
 
@@ -16,8 +17,15 @@ public class BankAccountTest{
     private static ApplicationContext factory;
 
     @BeforeClass public static void init(){
-	factory = new ClassPathXmlApplicationContext("spring.cfg.xml");
+	//	factory = new ClassPathXmlApplicationContext("spring.cfg.xml");
 	//	factory = context;
+	factory=new AnnotationConfigApplicationContext(BankAccount.class);
+
+	/*
+	ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+	MyService myService = ctx.getBean(MyService.class);
+	myService.doStuff();
+	*/
 
     }
 

@@ -7,6 +7,14 @@ import java.lang.*;
 
 @Configuration public class Canned{
 
+    @Bean public Account account(){
+	return new CheckingAccount().setBalance(doubleValue());
+    }
+
+    @Bean public UserBean user(){
+	return new Person().setName(stringValue());
+    }
+
     @Bean public String stringValue(){
 	return (new String("Canned-String-Dependency"));
     }
