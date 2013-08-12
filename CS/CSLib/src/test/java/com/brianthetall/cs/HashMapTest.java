@@ -5,11 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Assert;
 import java.util.Random;
 import java.lang.Integer;
 import java.lang.String;
+import java.util.Iterator;
 
 public class HashMapTest{
 
@@ -32,7 +34,6 @@ public class HashMapTest{
 	}
 
 	@Bean public String[] strings(){
-	    
 	    Random r=new Random();
 	    String[] retval=new String[TEST_SIZE];
 	    //	    for(String s:retval)//this method leaves retval full of nulls....
@@ -54,23 +55,40 @@ public class HashMapTest{
     private HashMap map;
 
     @Before public void setup(){
-
 	AnnotationConfigApplicationContext di=new AnnotationConfigApplicationContext("com.brianthetall.cs");
 	map=(HashMap)di.getBean("hashmap");
-
     }
 
-    @Test public void print(){
+    @After public void unsetup(){
+	map=null;
+    }
+
+    @Ignore @Test public void print(){
 	System.out.println(map);
     }
 
+    /**
+     * Verify that the number of map-entries is correct
+     */
     @Test public void size(){
 	assert(map.population() == Injectables.TEST_SIZE);
+	map.remove(Injectables.getKeys()[0]);	//remove some entries
+	map.remove(Injectables.getKeys()[1]);
+	map.remove(Injectables.getKeys()[2]);
+	assert(map.population() == Injectables.TEST_SIZE-3);
+	map.put(Injectables.getKeys()[0],Injectables.getValues()[0]);
+	map.put(Injectables.getKeys()[1],Injectables.getValues()[1]);
+	map.put(Injectables.getKeys()[2],Injectables.getValues()[2]);
+	map.put("Key_Random0",Injectables.getValues()[0]);
+	map.put("Key_Random1",Injectables.getValues()[1]);
+	map.put("Key_Random2",Injectables.getValues()[2]);
+	assert(map.population() == Injectables.TEST_SIZE+3);
     }
 
     /**
-     * 
-     *
+     * Test map's ability to get
+     * And verify the contents of the map
+     * Uses key and value arrays generated when map was built
      */
     @Test public void get(){
 	String[] s=Injectables.getKeys();
@@ -80,11 +98,32 @@ public class HashMapTest{
 	}
     }
 
-    @Test public void getArray(){
+    /**
+     * 
+     */
+    @Ignore @Test public void put(){
+	
+    }
+
+    /**
+     * Verify that the Entry[] returned by getArray:
+     * Has the correct size
+     */
+    @Ignore @Test public void getArray(){
 	String[] keys=Injectables.getKeys();
 	HashMap.Entry[] entries=map.getArray();
-	//verify that each of the keys that was used during construction are in this Entry[] obtained from the hashmap
-	
-    }    
+	System.out.println("Enrtries.length="+entries.length+" Keys.lengtth="+keys.length);
+
+    }
+
+    @Ignore @Test public void iterator(){
+	Iterator<HashMap.Entry> i = map.iterator();
+	int size=0;
+	while(i.hasNext()){
+	    i.next();
+	    size++;
+	}
+	assert(size==Injectables.getKeys().length);
+    }
 
 }

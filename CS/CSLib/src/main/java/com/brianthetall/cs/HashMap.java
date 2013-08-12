@@ -3,10 +3,11 @@ package com.brianthetall.cs;
 import java.lang.Math;
 import java.lang.String;
 import java.lang.Integer;
+import java.util.Iterator;
 
 public class HashMap <K,V>{
 
-    private static final boolean DEBUG=true;
+    private static final boolean DEBUG=false;
 
     public static class Entry<K,V>{
 	
@@ -72,25 +73,65 @@ public class HashMap <K,V>{
     private Entry[] data;
 
     /**
-     * default size; power of 2
+     * Construct new hashmap of initial size 128
      */
     public HashMap(){
 	this(128);
     }
 
+    /**
+     * Defaults to 128 if input is not valid
+     * @param elements base-2 size for this map 
+     */
     public HashMap(int elements){
 	counter=0;
-	//check that elements is a power of 2
-	double log2result=Math.log(elements)/Math.log(2);
+	double log2result=Math.log(elements)/Math.log(2);//check that elements is a power of 2
 	boolean powerOfTwo = Double.compare(0.0,log2result - new Double(log2result).intValue())==0 ? true:false;
-
 	if(powerOfTwo)
 	    data=new Entry[elements];//ignore warning
 	else
-	    data=new Entry[128];//default size if they dont insert pow of 2
-	    
+	    data=new Entry[128];//default size if they dont insert pow of 2	    
     }
 
+    /**
+     * Remove an Entry from the Map
+     * @param key belonging to HashMap.Entry to remove
+     * @return value that has been removed; null otherwise
+     */
+    public V remove(Object key){
+       	V retval=null;
+	
+	for(int i=getIndex(key) ; i<data.length ; i++){
+	    if(data[i]!=null){
+		if(data[i].getKey().equals(key)){
+		    retval=(V)data[i].getValue();
+		    data[i]=null;
+		    counter--;
+		    return retval;
+		}
+	    }
+	}
+
+	for(int i=0 ; i < getIndex(key) ; i++){
+	    if(data[i]!=null){
+		if(data[i].getKey().equals(key)){
+		    retval=(V)data[i].getValue();
+		    data[i]=null;
+		    counter--;
+		    return retval;		 
+		}
+	    }
+	}
+
+	System.err.println("Remove: No Such Key in Map");
+	return retval;
+    }
+
+    /**
+     * Get a value out of the map
+     * @param key the map key to lookup
+     * @return generic value; null if the key is not in the map, or if null is the value stored with this key
+     */
     public V get(Object key){
 
 	V retval=null;
@@ -102,7 +143,6 @@ public class HashMap <K,V>{
 		    return (V)data[i].getValue();
 		}
 	    }
-	      
 	}
 
 	for(int i=0 ; i < getIndex(key) ; i++){
@@ -112,19 +152,17 @@ public class HashMap <K,V>{
 		    return (V)data[i].getValue();
 		}
 	    }
-
 	}
 
 	System.err.println("No Such Key in Map");
-
 	return retval;
-
     }
 
-    /** put
+    /**
+     * Put a key-value pair into the map
      * @param key - key to hash
      * @param value - value to store
-     * @return Old value for this key
+     * @return Old value for this key; null if new key
      */
     public V put(K key,V value){
 
@@ -177,13 +215,17 @@ public class HashMap <K,V>{
 	    }
 
 	}
-	//	System.err.println("NO ROOM for: "+e);
-	resize();
-	put(key,value);
-	return data[getIndex(key)].getValue()==null ? null : (V)(data[getIndex(key)].getValue());
+
+	resize();//there is no room left in the map & no previous entry with this key
+	return put(key,value);//recurse
+	//	return data[getIndex(key)].getValue()==null ? null : (V)(data[getIndex(key)].getValue());
     }
 
-
+    /**
+     * Hash key and return a hashCode
+     * @param key object to hash
+     * @return integer hash code
+     */
     private int getIndex(Object key){
 	int hash=key.hashCode();
 	hash &= data.length-1;//mask hash to fit size of map
@@ -204,6 +246,9 @@ public class HashMap <K,V>{
 	return counter;
     }
 
+    /**
+     * @return String containing each HashMap.Entry
+     */
     public String toString(){
 
 	String retval="";
@@ -214,8 +259,21 @@ public class HashMap <K,V>{
 	return retval;
     }
 
+    /**
+     * Obtain a reference to the underlying Entry[]
+     * @return array of HashMap.Entry
+     * @see HashMap.Entry
+     */
     public Entry[] getArray(){
 	return data;
+    }
+
+    /** HERE fill this out!
+     * Get an iterator containing all non-null values in the data[]
+     * @return Iterator containing non-null indexes from the data[]
+     */
+    public Iterator<HashMap.Entry> iterator(){
+	return null;
     }
 
     /**
