@@ -190,8 +190,18 @@ public class HashMap <K,V>{
 	return hash;
     }
 
+    /**
+     * @return the size of the underlying array
+     */
     public int size(){
 	return data.length;
+    }
+
+    /**
+     * @return number of populated Entries in the array
+     */
+    public int population(){
+	return counter;
     }
 
     public String toString(){
