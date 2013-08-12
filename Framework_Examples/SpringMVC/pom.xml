@@ -3,11 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.brianthetall.frameworks.mvc</groupId>
   <artifactId>SpringMVC</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>SpringMVC</name>
   <url>http://maven.apache.org</url>
 
+  <scm>
+    <connection>scm:git:ssh://localhost:/home/user/gitRepos/java-learning</connection>
+    <developerConnection>scm:git:ssh://localhost:/home/user/gitRepos/java-learning</developerConnection>
+    <tag>HEAD</tag>
+<!--    <url>http://127.0.0.1/websvn/my-project</url>-->
+  </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -48,6 +54,7 @@
   </dependencies>
   
   <build>
+    <finalName>SpringMavenWebapp</finalName>
     <plugins>
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
@@ -58,7 +65,44 @@
 	  <target>1.7</target>
 	</configuration>
       </plugin>
+      
+      <plugin>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>tomcat-maven-plugin</artifactId>
+	<configuration>
+	  <url>http://127.0.0.1:8080/manager</url>
+	  <server>folder</server>
+	  <path>/SpringMavenWebapp</path>
+	</configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+        </configuration>
+      </plugin>
+      
     </plugins>
   </build>
+  
+  <distributionManagement>
+    <snapshotRepository>
+      <id>folder</id>
+      <name>folderBox</name>
+      <url>scp://localhost/var/lib/tomcat7/webapps</url>
+    </snapshotRepository>
+  </distributionManagement>
 
 </project>
