@@ -5,18 +5,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.Comparable;
 
-public class MergeSort<T extends Comparable>{
+public class MergeSort{
 
-    List<T> list;
+    //    private List<T> list;
+    private MergeSort(){}
 
-    public MergeSort(){
-	this(256);
-    }
-
-    public MergeSort(int size){
-	list=new ArrayList<T>(size);
-    }
-
+    /*
     public MergeSort(List<T> unorderedList){
 	if(unorderedList!=null)
 	    this.list=unorderedList;
@@ -27,9 +21,13 @@ public class MergeSort<T extends Comparable>{
 	for(T t:unorderedArray)
 	    list.add(t);
     }
+    */
 
-    //mergesort implementation
-    public List<T> sort(){
+    /**
+     * Perform mergesort; Nlog(N)
+     * @return Sorted List<T>
+     */
+    public static <T extends Comparable> List<T> sort(List<T> list){
 
 	if(list==null)
 	    return null;
@@ -45,8 +43,10 @@ public class MergeSort<T extends Comparable>{
 	}
 
 	int middle=list.size()/2;
-	List<T> left=new MergeSort(list.subList(0,middle)).sort();
-	List<T> right=new MergeSort(list.subList(middle,list.size())).sort();
+	//	List<T> left=new MergeSort(list.subList(0,middle)).sort();
+	//	List<T> right=new MergeSort(list.subList(middle,list.size())).sort();
+	List<T> left=MergeSort.sort(list.subList(0,middle));
+	List<T> right=MergeSort.sort(list.subList(middle,list.size()));
 	int l_index=0,r_index=0;
 	List<T> retval=new ArrayList<T>(list.size());
 
@@ -65,17 +65,12 @@ public class MergeSort<T extends Comparable>{
     }
 
     public static void main(String args[]){
-	
 	List<Double> input = new ArrayList<>(args.length);
-	
 	for(int i=0;i<args.length;i++)
 	    input.add(new Double(args[i]));
-
-	List<Double> sortedList = new MergeSort(input).sort();
-	
+	List<Double> sortedList = MergeSort.sort(input);
 	for(Double d:sortedList)
 	    System.out.print(d+" ");
-
 	System.out.println("");
     }
 }

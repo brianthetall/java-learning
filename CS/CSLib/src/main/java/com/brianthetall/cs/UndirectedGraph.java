@@ -30,7 +30,10 @@ public class UndirectedGraph implements GraphInterface{
 	Vertex.Edge[] edges=getEdges();
 	//	for(Vertex.Edge test:edges)
 	//	    System.out.println("EDGE:"+test);
-	List<Vertex.Edge> list=new MergeSort<Vertex.Edge>(edges).sort();
+	List<Vertex.Edge> edgeList=new ArrayList<Vertex.Edge>(edges.length);
+	for(Vertex.Edge e:edges)
+	    edgeList.add(e);
+	List<Vertex.Edge> list=MergeSort.sort(edgeList);
 
 	Vertex.Edge[] retval = list.toArray(new Vertex.Edge[list.size()]);
 

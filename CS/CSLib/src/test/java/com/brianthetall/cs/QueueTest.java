@@ -1,7 +1,5 @@
 package com.brianthetall.cs;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Bean;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,30 +17,16 @@ public class QueueTest{
     private Queue q;
 
     /**
-     * Configuration class containing Spring-beans
+     * Run no-arg constructor for each test
      */
-    @Configuration public static class Injectables{
-	/**
-	 * @return Provides an Array of Objects
-	 */
-	@Bean public static Object[] objectArray(){
-	    Random r=new Random();
-	    int size=r.nextInt();
-	    size=size<0?size*=-1:size;//positive
-	    size=size==0?128:size;//non-zero
-	    size=size%16000;//under a limit
-	    Object[] o=new Object[size];
-	    for(int i=0;i<o.length;i++)
-		o[i]=new Object();
-	    return o;
-	}
-
-    }
-
     @Before public void setup(){
 	q=new Queue();
     }
 
+    /**
+     * Cleanup after each test
+     * Null the queue reference
+     */
     @After public void destroy(){
 	q=null;
     }
@@ -59,9 +43,46 @@ public class QueueTest{
 	assert(q.equals(q2));
     }
 
-    @Test public void poll(){}
-    @Test public void peek(){}
+    /**
+     * Test Queue.poll()
+     * Random number of Objects go in
+     * Assert that every poll() returns the correct Object
+     * Stop when poll() returns null; the line is empty
+     */
+    @Test public void poll(){
+	Object[] data=Injectables.objectArray();
+	assert(q.poll()==null);
+	for(Object o:data)
+	    q.add(o);
+	Object buffer=q.poll();
+	int i=0;
+	while(buffer!=null){
+	    assert(buffer.equals(data[i++]));
+	    buffer=q.poll();
+	}
+    }
 
+    /**
+     * Load queue with injected object[]
+     * Check that peek() returns correct values
+     * as the queue is polled.
+     */
+    @Test public void peek(){
+	Object[] data=Injectables.objectArray();
+	assert(q.peek()==null);
+	for(Object o:data)
+	    q.add(o);
+	for(int i=0;i<data.length;i++){
+	    assert(data[i].equals(q.peek()));
+	    q.poll();
+	}
+    }
+    
+    /**
+     * Test Queue.add(Object)
+     * Verify queue size as additions are made
+     * Assert that array that went in matches queue contents
+     */
     @Test public void add(){
 	Object[] o=Injectables.objectArray();
 	assert(q.size()==0);
