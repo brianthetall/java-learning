@@ -11,6 +11,29 @@ import java.lang.Exception;
 @Configuration public class Injectables{
 
     /**
+     * Return an Integer[] between 512 & 4096 elements
+     * Their values are randomly assigned
+     * @return Integer[] of random numbers
+     */
+    @Bean public static Integer[] integerArray()throws Exception{
+	Integer[] i=new Integer[boundedInt(512,4096)];
+	Random r=new Random();
+	for(int o=0;o<i.length;o++)
+	    i[o]=new Integer(r.nextInt());
+	return i;
+    }
+
+    public static Integer[] integerArray(int size)throws Exception{
+	if(size<=0)
+	    throw new Exception("Injectables.integerArray(int size) Invalid input");
+    	Integer[] i=new Integer[size];
+	Random r=new Random();
+	for(int q=0;q<i.length;q++)
+	    i[q]=new Integer(r.nextInt());
+	return i;
+    }
+
+    /**
      * Produce a bounded, POSITIVE random number
      * @param lower bound
      * @param upper bound
@@ -53,6 +76,10 @@ import java.lang.Exception;
 	return d;
     }
 
+    /**
+     * Bean that contains a random positive int
+     * Between 1 & 1024
+     */
     @Bean public static int randomPositive()throws Exception{
 	return boundedInt(1,1024);
     }

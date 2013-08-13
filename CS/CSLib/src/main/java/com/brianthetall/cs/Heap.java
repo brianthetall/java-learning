@@ -70,6 +70,7 @@ public class Heap<T extends Comparable>{
 
     }
 
+    //HOW DOES THIS BEHAVE AS THE MAP GETS BIG?
     private void heapdown(int index){
 	
 	int firstChild=findChild(index);
@@ -78,7 +79,7 @@ public class Heap<T extends Comparable>{
 	    int largestIndex=-1;
 	    for(int i=firstChild ; i<firstChild+base ; i++){
 		
-		if(data[i] == null)
+		if(data[i] == null)//ARRAY INDEX OUT OF BOUNDS
 		    break;
 		
 		if(data[i].getValue().compareTo(largestChild) > 0){
@@ -93,17 +94,30 @@ public class Heap<T extends Comparable>{
 		Node<T> temp=data[largestIndex];
 		data[largestIndex] = data[index];
 		data[index] = temp;
-		heapdown(largestIndex);//recurse
+		heapdown(largestIndex);//recurse //ARRAY INDEX OUTOF BOUNDS
 	    }
 	}
     }
 
-    public void add(T t){
+    /**
+     * Add a <T> into the Heap
+     * @param t Object of type T to add
+     * @return false if the Heap is full
+     */
+    public boolean add(T t){
+	if(cursor==data.length)
+	    return false;
 	data[cursor] = new Node<T>(t);
 	heapup(cursor);
 	cursor++;
+	System.out.println("Added to Heap:"+data[cursor-1]);
+	return true;
     }
 
+    /**
+     * BROKEN: index error with polling heap
+     * happens when the heap becomes full
+     */
     public T poll(){
 
 	if(data[0]==null)
@@ -117,10 +131,20 @@ public class Heap<T extends Comparable>{
 	return retval.getValue();
     }
 
+    /**
+     * Peek at top value in heap
+     * @return null if heap is empty; else the Value
+     */
     public T peek(){
+	if(data[0]==null)
+	    return null;
 	return (T)data[0].getValue();
     }
 
+    /**
+     * Polls the heap of all elements
+     * @return sorted object[] Large-to-Small
+     */
     public Object[] sort(){
 	
 	Object[] retval=new Object[cursor];
@@ -150,6 +174,23 @@ public class Heap<T extends Comparable>{
 	    i++;
 	}
 	return r;
+    }
+
+    /**
+     * Package function for testing
+     * @return the size of the Heap
+     */
+    int size(){
+	return cursor;
+    }
+
+    /**
+     * Package function for testing
+     * @return Underlying array of Heap.Nodes used by this Heap
+     * @see Heap.Node
+     */
+    Node[] data(){
+	return data;
     }
 
     public static void main(String[] args){
@@ -193,6 +234,13 @@ public class Heap<T extends Comparable>{
 	Object[] sorted = heap.sort();
 	for(Object o:sorted)
 	    System.out.println(o);
+
+	heap.poll();
+	heap.poll();
+	heap.poll();
+	heap.poll();
+	heap.poll();
+	heap.poll();
 
     }
 
