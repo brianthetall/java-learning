@@ -9,6 +9,10 @@ import java.util.HashSet;
 
 public class MinimumSpanningTree{
 
+    /**
+     * MinimumSpanningTree.Cluster<V extends GraphInterface.Vertex> is used by MinimumSpanningTree.kruskal() to group connected vertex's
+     * As Clusters connect together, one cluster consumes the other
+     */
     public static class Cluster<V extends GraphInterface.Vertex>{
 
 	private Set<V> visited;

@@ -6,9 +6,52 @@ import java.util.Random;
 import java.lang.Object;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.lang.Exception;
+import java.lang.String;
 
 @Configuration public class Injectables{
+
+    public static String[] stringArray(int size){
+	Random r=new Random();
+	String[] s=new String[size];
+	for(int i=0;i<s.length;i++)
+	    s[i]=new String(new Integer(r.nextInt()).toString());
+	return s;
+    }
+
+    @Bean public static String[] stringArray()throws Exception{
+	Random r=new Random();
+	String[] s=new String[boundedInt(128,4096)];
+	for(int i=0;i<s.length;i++)
+	    s[i]=new String(new Integer(r.nextInt()).toString());
+	return s;
+    }
+
+    @Bean public static Map<String,Double> map()throws Exception{
+	Map<String,Double> map=new java.util.LinkedHashMap<String,Double>(128,(float)0.5);
+	String[] names=stringArray();
+	double[] values=doubleArray(names.length);
+	for(int i=0;i<names.length;i++)
+	    map.put(names[i],new Double(values[i]));
+	return map;
+    }
+
+    @Bean public static Good[] goodArray()throws Exception{
+	Good[] g=new Good[boundedInt(64,128)];
+	String[] names=stringArray(g.length);
+	for(int i=0;i<g.length;i++)
+	    g[i]=new Good<String,Map>(names[i],map());
+	return g;
+    }
+
+    @Bean public static UndirectedGraph undirectedGraph()throws Exception{
+	UndirectedGraph graph=new UndirectedGraph();
+	Good[] goods=goodArray();
+	for(Good g:goods)
+	    graph.addVertex(g);
+	return graph;
+    }
 
     /**
      * Return an Integer[] between 512 & 4096 elements

@@ -1,3 +1,8 @@
+/**
+ * check if ADD updates if key already exists!
+ *
+ */
+
 package com.brianthetall.cs;
 
 import java.util.Set;
@@ -52,7 +57,6 @@ public class UndirectedGraph implements GraphInterface{
 	return null;
     }
 
-    //HERE
     public Vertex.Edge[] getEdges(){
 
 	List<Vertex.Edge> edges;
