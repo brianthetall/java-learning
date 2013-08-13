@@ -22,7 +22,7 @@ public class HeapTest{
 
     @Before public void base2Setup()throws Exception{
 	size=Injectables.boundedInt(64,1024);
-	heap=new Heap<Integer>(size+1024,2);
+	heap=new Heap<Integer>(size,2);
 	assert(0==heap.size());
     }
 
@@ -35,15 +35,15 @@ public class HeapTest{
 	List<Integer> list=new ArrayList<Integer>(i.length);
 	assert(heap.peek()==null);
 	for(int q=0;q<i.length;q++){//do not over fill heap!
-	    System.out.println("Adding i["+q+"]="+i[q]);
 	    heap.add(i[q]);
 	    list.add(i[q]);//for MergeSort
 	}
 	assert(heap.size()==i.length);
+
 	List<Integer> sorted=MergeSort.sort(list);
-	Integer buffer=heap.poll();//INDEX ERROR: goes away when Heap is not full...
+	Integer buffer=heap.poll();
 	int counter=i.length-1;
-	while(buffer!=null){
+	while(buffer!=null){//verify heap outputs sorted list
 	    assert(buffer.equals(sorted.get(counter--)));
 	    buffer=heap.poll();
 	}

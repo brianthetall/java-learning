@@ -70,7 +70,6 @@ public class Heap<T extends Comparable>{
 
     }
 
-    //HOW DOES THIS BEHAVE AS THE MAP GETS BIG?
     private void heapdown(int index){
 	
 	int firstChild=findChild(index);
@@ -78,23 +77,22 @@ public class Heap<T extends Comparable>{
 	    T largestChild=(T)data[index].getValue();//init to parent's value
 	    int largestIndex=-1;
 	    for(int i=firstChild ; i<firstChild+base ; i++){
-		
-		if(data[i] == null)//ARRAY INDEX OUT OF BOUNDS
-		    break;
-		
-		if(data[i].getValue().compareTo(largestChild) > 0){
+		if(i>=data.length)
+		    break;//we are at the end of the heap
+		if(data[i] == null)
+		    break;		
+		else if(data[i].getValue().compareTo(largestChild) > 0){
 		    largestChild=(T)data[i].getValue();
 		    largestIndex=i;
 		}
 	    }
 	    
 	    //if any children are larger, the bigest is now in largestChild/Index   
-	    if(largestChild.compareTo(data[index].getValue()) > 0){
-		
+	    if(largestChild.compareTo(data[index].getValue()) > 0){		
 		Node<T> temp=data[largestIndex];
 		data[largestIndex] = data[index];
 		data[index] = temp;
-		heapdown(largestIndex);//recurse //ARRAY INDEX OUTOF BOUNDS
+		heapdown(largestIndex);//recurse
 	    }
 	}
     }
@@ -110,7 +108,6 @@ public class Heap<T extends Comparable>{
 	data[cursor] = new Node<T>(t);
 	heapup(cursor);
 	cursor++;
-	System.out.println("Added to Heap:"+data[cursor-1]);
 	return true;
     }
 
