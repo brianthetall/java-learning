@@ -8,24 +8,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/start")
+@RequestMapping("/first")
 public class FirstController{
 
-    //WHAT CALLS THIS? DISPATCHER_SERVLET???
-    @RequestMapping(value="/", method=RequestMethod.GET)
-	public String loadFormPage(Model m) {//WHERE DOES m COME FROM? DISPATCHER_SERVLET?
-	//	m.addAttribute("subscriber", new Subscriber());//does this effect the returned View?
+    @RequestMapping(method=RequestMethod.GET)
+	public String loadFormPage(Model m) {
+	m.addAttribute("parameterTest","BAaaaaaaaaaM!");
 	return "view0";
     }
 
     //WHAT DOES @VALID DO?
     //what is BindingResult? Model?
+    /*
     @RequestMapping(value="/", method=RequestMethod.POST)
-	public String submitForm(/*@Valid Subscriber subscriber, */BindingResult result, Model m) {
+	public String submitForm(/*@Valid Subscriber subscriber, BindingResult result, Model m) {
 	if(result.hasErrors()) {
 	    return "view0";
 	}
 	return "view0";
     }
-}
+    */
 
+}
