@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping("/start")
 public class FirstController{
 
     //WHAT CALLS THIS? DISPATCHER_SERVLET???
