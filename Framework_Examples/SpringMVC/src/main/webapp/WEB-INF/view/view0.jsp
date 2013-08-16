@@ -14,7 +14,7 @@
 	  <%= new Date() %>
 	  <%= request.getParameter("parameterTest") %>
 	  <br>
-	  <a href="W/userForm">User Form</a>	
+	  <a href="A/userForm">User Form</a>	
 	</p>
 	<% out.println("</center></body>"); %>
 </html>

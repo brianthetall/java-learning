@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/Q")
+@RequestMapping("/A")
 public class FirstController{
 
     @RequestMapping(method=RequestMethod.GET)
@@ -16,17 +16,5 @@ public class FirstController{
 	m.addAttribute("parameterTest","BAaaaaaaaaaM!");
 	return "view0";
     }
-
-    //WHAT DOES @VALID DO?
-    //what is BindingResult? Model?
-    /*
-    @RequestMapping(value="/", method=RequestMethod.POST)
-	public String submitForm(/*@Valid Subscriber subscriber, BindingResult result, Model m) {
-	if(result.hasErrors()) {
-	    return "view0";
-	}
-	return "view0";
-    }
-    */
 
 }

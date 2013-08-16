@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/W")
+@RequestMapping("/A")
 public class PersonalDataController{
 
     @RequestMapping(value="/userForm",method=RequestMethod.GET)
@@ -17,9 +17,17 @@ public class PersonalDataController{
 
     @RequestMapping(value="/userForm",method=RequestMethod.POST)
     public String rxForm(Model m){
-	//read the data out of the REQUEST
-	//BUILD THE MODEL/MAP
-	//HOW DOES m GET PASSED TO JSP?
+
+	m.addAttribute("first","Bob");
+	m.addAttribute("last","Dole");
+	m.addAttribute("passwd","organicDildos");
+
+	/*
+	  m.addAttribute("first",request.getParameter(""));
+	  m.addAttribute("last",request.getParameter(""));
+	  m.addAttribute("passwd",request.getParameter(""));
+	*/
+
 	return "welcome";
     }
 
