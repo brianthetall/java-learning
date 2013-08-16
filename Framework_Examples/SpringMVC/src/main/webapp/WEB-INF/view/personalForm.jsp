@@ -5,9 +5,9 @@
   <body><center>
     <h2>
       Please type in below:
-      <form name="input" action="/SpringMavenWebapp/A/userForm" method="post">
-	First name: <input type="text" name="firstname"><br>
-	Last name: <input type="text" name="lastname"><br>
+      <form name="input" action="userForm" method="post">
+	First name: <input type="text" name="first"><br>
+	Last name: <input type="text" name="last"><br>
 	Password: <input type="password" name="passwd">
 	<input type="submit" value="Submit">
       </form>

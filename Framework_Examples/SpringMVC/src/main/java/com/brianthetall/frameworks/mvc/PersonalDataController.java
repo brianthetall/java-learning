@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.lang.String;
 
 @Controller
 @RequestMapping("/A")
@@ -16,17 +18,17 @@ public class PersonalDataController{
     }
 
     @RequestMapping(value="/userForm",method=RequestMethod.POST)
-    public String rxForm(Model m){
+    public String rxForm(@RequestParam("first") String first,@RequestParam("last") String last, @RequestParam("passwd") String passwd, Model m){
 
-	m.addAttribute("first","Bob");
-	m.addAttribute("last","Dole");
-	m.addAttribute("passwd","organicDildos");
+	//verify all strings passed in are valid
+	if(first==null||last==null||passwd==null)
+	    return "redirect:userForm";
+	if(first.length()==0||last.length()==0||passwd.length()==0)
+	    return "redirect:userForm";
 
-	/*
-	  m.addAttribute("first",request.getParameter(""));
-	  m.addAttribute("last",request.getParameter(""));
-	  m.addAttribute("passwd",request.getParameter(""));
-	*/
+	m.addAttribute("first",first);
+	m.addAttribute("last",last);
+	m.addAttribute("passwd",passwd);
 
 	return "welcome";
     }
